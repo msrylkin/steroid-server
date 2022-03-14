@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  # steroidbackend:
+  #   image: steroidbackend
+  #   build:
+  #     context: .
+  #     dockerfile: ./Dockerfile
+  #   environment:
+  #     NODE_ENV: production
+  #   ports:
+  #     - 3000:3000
+
+  postgres:
+    container_name: steroid_postgres
+    image: postgres:14.1
+    networks:
+      - steroid-network
+    ports:
+      - 6543:5432
+    environment:
+      - POSTGRES_DB=steroid
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+
+networks:
+  steroid-network:
