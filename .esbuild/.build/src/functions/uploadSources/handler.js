@@ -267,7 +267,7 @@ var require_lodash = __commonJS({
       var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/, reIsPlainProp = /^\w*$/, rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
       var reRegExpChar = /[\\^$.*+?()[\]{}|]/g, reHasRegExpChar = RegExp(reRegExpChar.source);
       var reTrimStart = /^\s+/;
-      var reWhitespace = /\s/;
+      var reWhitespace2 = /\s/;
       var reWrapComment = /\{(?:\n\/\* \[wrapped with .+\] \*\/)?\n?/, reWrapDetails = /\{\n\/\* \[wrapped with (.+)\] \*/, reSplitDetails = /,? & /;
       var reAsciiWord = /[^\x00-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]+/g;
       var reForbiddenIdentifierChars = /[()=,{}\[\]\/\s]/;
@@ -898,7 +898,7 @@ var require_lodash = __commonJS({
       }
       function trimmedEndIndex(string) {
         var index = string.length;
-        while (index-- && reWhitespace.test(string.charAt(index))) {
+        while (index-- && reWhitespace2.test(string.charAt(index))) {
         }
         return index;
       }
@@ -3467,7 +3467,7 @@ var require_lodash = __commonJS({
           }
           return mapped.length && mapped[0] === arrays[0] ? baseIntersection(mapped, undefined2, comparator) : [];
         });
-        function join(array, separator) {
+        function join2(array, separator) {
           return array == null ? "" : nativeJoin.call(array, separator);
         }
         function last(array) {
@@ -5383,7 +5383,7 @@ var require_lodash = __commonJS({
         lodash.isUndefined = isUndefined;
         lodash.isWeakMap = isWeakMap;
         lodash.isWeakSet = isWeakSet;
-        lodash.join = join;
+        lodash.join = join2;
         lodash.kebabCase = kebabCase;
         lodash.last = last;
         lodash.lastIndexOf = lastIndexOf;
@@ -8690,23 +8690,23 @@ var require_assertString = __commonJS({
       value: true
     });
     exports.default = assertString;
-    function _typeof(obj) {
+    function _typeof2(obj) {
       "@babel/helpers - typeof";
       if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-        _typeof = function _typeof2(obj2) {
+        _typeof2 = function _typeof3(obj2) {
           return typeof obj2;
         };
       } else {
-        _typeof = function _typeof2(obj2) {
+        _typeof2 = function _typeof3(obj2) {
           return obj2 && typeof Symbol === "function" && obj2.constructor === Symbol && obj2 !== Symbol.prototype ? "symbol" : typeof obj2;
         };
       }
-      return _typeof(obj);
+      return _typeof2(obj);
     }
     function assertString(input) {
       var isString = typeof input === "string" || input instanceof String;
       if (!isString) {
-        var invalidType = _typeof(input);
+        var invalidType = _typeof2(input);
         if (input === null)
           invalidType = "null";
         else if (invalidType === "object")
@@ -8981,12 +8981,12 @@ var require_equals = __commonJS({
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
-    exports.default = equals;
+    exports.default = equals2;
     var _assertString = _interopRequireDefault(require_assertString());
     function _interopRequireDefault(obj) {
       return obj && obj.__esModule ? obj : { default: obj };
     }
-    function equals(str, comparison) {
+    function equals2(str, comparison) {
       (0, _assertString.default)(str);
       return str === comparison;
     }
@@ -9003,21 +9003,21 @@ var require_toString = __commonJS({
       value: true
     });
     exports.default = toString2;
-    function _typeof(obj) {
+    function _typeof2(obj) {
       "@babel/helpers - typeof";
       if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-        _typeof = function _typeof2(obj2) {
+        _typeof2 = function _typeof3(obj2) {
           return typeof obj2;
         };
       } else {
-        _typeof = function _typeof2(obj2) {
+        _typeof2 = function _typeof3(obj2) {
           return obj2 && typeof Symbol === "function" && obj2.constructor === Symbol && obj2 !== Symbol.prototype ? "symbol" : typeof obj2;
         };
       }
-      return _typeof(obj);
+      return _typeof2(obj);
     }
     function toString2(input) {
-      if (_typeof(input) === "object" && input !== null) {
+      if (_typeof2(input) === "object" && input !== null) {
         if (typeof input.toString === "function") {
           input = input.toString();
         } else {
@@ -9123,24 +9123,24 @@ var require_isByteLength = __commonJS({
     function _interopRequireDefault(obj) {
       return obj && obj.__esModule ? obj : { default: obj };
     }
-    function _typeof(obj) {
+    function _typeof2(obj) {
       "@babel/helpers - typeof";
       if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-        _typeof = function _typeof2(obj2) {
+        _typeof2 = function _typeof3(obj2) {
           return typeof obj2;
         };
       } else {
-        _typeof = function _typeof2(obj2) {
+        _typeof2 = function _typeof3(obj2) {
           return obj2 && typeof Symbol === "function" && obj2.constructor === Symbol && obj2 !== Symbol.prototype ? "symbol" : typeof obj2;
         };
       }
-      return _typeof(obj);
+      return _typeof2(obj);
     }
     function isByteLength(str, options) {
       (0, _assertString.default)(str);
       var min;
       var max;
-      if (_typeof(options) === "object") {
+      if (_typeof2(options) === "object") {
         min = options.min || 0;
         max = options.max;
       } else {
@@ -10934,18 +10934,18 @@ var require_isJSON = __commonJS({
     function _interopRequireDefault(obj) {
       return obj && obj.__esModule ? obj : { default: obj };
     }
-    function _typeof(obj) {
+    function _typeof2(obj) {
       "@babel/helpers - typeof";
       if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-        _typeof = function _typeof2(obj2) {
+        _typeof2 = function _typeof3(obj2) {
           return typeof obj2;
         };
       } else {
-        _typeof = function _typeof2(obj2) {
+        _typeof2 = function _typeof3(obj2) {
           return obj2 && typeof Symbol === "function" && obj2.constructor === Symbol && obj2 !== Symbol.prototype ? "symbol" : typeof obj2;
         };
       }
-      return _typeof(obj);
+      return _typeof2(obj);
     }
     var default_json_options = {
       allow_primitives: false
@@ -10959,7 +10959,7 @@ var require_isJSON = __commonJS({
           primitives = [null, false, true];
         }
         var obj = JSON.parse(str);
-        return primitives.includes(obj) || !!obj && _typeof(obj) === "object";
+        return primitives.includes(obj) || !!obj && _typeof2(obj) === "object";
       } catch (e) {
       }
       return false;
@@ -11007,24 +11007,24 @@ var require_isLength = __commonJS({
     function _interopRequireDefault(obj) {
       return obj && obj.__esModule ? obj : { default: obj };
     }
-    function _typeof(obj) {
+    function _typeof2(obj) {
       "@babel/helpers - typeof";
       if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-        _typeof = function _typeof2(obj2) {
+        _typeof2 = function _typeof3(obj2) {
           return typeof obj2;
         };
       } else {
-        _typeof = function _typeof2(obj2) {
+        _typeof2 = function _typeof3(obj2) {
           return obj2 && typeof Symbol === "function" && obj2.constructor === Symbol && obj2 !== Symbol.prototype ? "symbol" : typeof obj2;
         };
       }
-      return _typeof(obj);
+      return _typeof2(obj);
     }
     function isLength(str, options) {
       (0, _assertString.default)(str);
       var min;
       var max;
-      if (_typeof(options) === "object") {
+      if (_typeof2(options) === "object") {
         min = options.min || 0;
         max = options.max;
       } else {
@@ -11155,18 +11155,18 @@ var require_isIn = __commonJS({
     function _interopRequireDefault(obj) {
       return obj && obj.__esModule ? obj : { default: obj };
     }
-    function _typeof(obj) {
+    function _typeof2(obj) {
       "@babel/helpers - typeof";
       if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-        _typeof = function _typeof2(obj2) {
+        _typeof2 = function _typeof3(obj2) {
           return typeof obj2;
         };
       } else {
-        _typeof = function _typeof2(obj2) {
+        _typeof2 = function _typeof3(obj2) {
           return obj2 && typeof Symbol === "function" && obj2.constructor === Symbol && obj2 !== Symbol.prototype ? "symbol" : typeof obj2;
         };
       }
-      return _typeof(obj);
+      return _typeof2(obj);
     }
     function isIn(str, options) {
       (0, _assertString.default)(str);
@@ -11179,7 +11179,7 @@ var require_isIn = __commonJS({
           }
         }
         return array.indexOf(str) >= 0;
-      } else if (_typeof(options) === "object") {
+      } else if (_typeof2(options) === "object") {
         return options.hasOwnProperty(str);
       } else if (options && typeof options.indexOf === "function") {
         return options.indexOf(str) >= 0;
@@ -11841,18 +11841,18 @@ var require_algorithms = __commonJS({
 var require_isTaxID = __commonJS({
   "node_modules/validator/lib/isTaxID.js"(exports, module2) {
     "use strict";
-    function _typeof(obj) {
+    function _typeof2(obj) {
       "@babel/helpers - typeof";
       if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-        _typeof = function _typeof2(obj2) {
+        _typeof2 = function _typeof3(obj2) {
           return typeof obj2;
         };
       } else {
-        _typeof = function _typeof2(obj2) {
+        _typeof2 = function _typeof3(obj2) {
           return obj2 && typeof Symbol === "function" && obj2.constructor === Symbol && obj2 !== Symbol.prototype ? "symbol" : typeof obj2;
         };
       }
-      return _typeof(obj);
+      return _typeof2(obj);
     }
     Object.defineProperty(exports, "__esModule", {
       value: true
@@ -11874,7 +11874,7 @@ var require_isTaxID = __commonJS({
       if (obj && obj.__esModule) {
         return obj;
       }
-      if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") {
+      if (obj === null || _typeof2(obj) !== "object" && typeof obj !== "function") {
         return { default: obj };
       }
       var cache = _getRequireWildcardCache();
@@ -14111,18 +14111,18 @@ var require_isVAT = __commonJS({
 var require_validator = __commonJS({
   "node_modules/validator/index.js"(exports, module2) {
     "use strict";
-    function _typeof(obj) {
+    function _typeof2(obj) {
       "@babel/helpers - typeof";
       if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-        _typeof = function _typeof2(obj2) {
+        _typeof2 = function _typeof3(obj2) {
           return typeof obj2;
         };
       } else {
-        _typeof = function _typeof2(obj2) {
+        _typeof2 = function _typeof3(obj2) {
           return obj2 && typeof Symbol === "function" && obj2.constructor === Symbol && obj2 !== Symbol.prototype ? "symbol" : typeof obj2;
         };
       }
-      return _typeof(obj);
+      return _typeof2(obj);
     }
     Object.defineProperty(exports, "__esModule", {
       value: true
@@ -14234,7 +14234,7 @@ var require_validator = __commonJS({
       if (obj && obj.__esModule) {
         return obj;
       }
-      if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") {
+      if (obj === null || _typeof2(obj) !== "object" && typeof obj !== "function") {
         return { default: obj };
       }
       var cache = _getRequireWildcardCache();
@@ -14804,8 +14804,8 @@ var require_moment = __commonJS({
         var output = this._relativeTime[string];
         return isFunction(output) ? output(number, withoutSuffix, string, isFuture) : output.replace(/%d/i, number);
       }
-      function pastFuture(diff2, output) {
-        var format2 = this._relativeTime[diff2 > 0 ? "future" : "past"];
+      function pastFuture(diff3, output) {
+        var format2 = this._relativeTime[diff3 > 0 ? "future" : "past"];
         return isFunction(format2) ? format2(output) : format2.replace(/%s/i, output);
       }
       var aliases = {};
@@ -16493,11 +16493,11 @@ var require_moment = __commonJS({
         return minutes2 === 0 ? 0 : parts[0] === "+" ? minutes2 : -minutes2;
       }
       function cloneWithOffset(input, model) {
-        var res, diff2;
+        var res, diff3;
         if (model._isUTC) {
           res = model.clone();
-          diff2 = (isMoment(input) || isDate(input) ? input.valueOf() : createLocal(input).valueOf()) - res.valueOf();
-          res._d.setTime(res._d.valueOf() + diff2);
+          diff3 = (isMoment(input) || isDate(input) ? input.valueOf() : createLocal(input).valueOf()) - res.valueOf();
+          res._d.setTime(res._d.valueOf() + diff3);
           hooks.updateOffset(res, false);
           return res;
         } else {
@@ -16798,8 +16798,8 @@ var require_moment = __commonJS({
         return objectTest && propertyTest;
       }
       function getCalendarFormat(myMoment, now2) {
-        var diff2 = myMoment.diff(now2, "days", true);
-        return diff2 < -6 ? "sameElse" : diff2 < -1 ? "lastWeek" : diff2 < 0 ? "lastDay" : diff2 < 1 ? "sameDay" : diff2 < 2 ? "nextDay" : diff2 < 7 ? "nextWeek" : "sameElse";
+        var diff3 = myMoment.diff(now2, "days", true);
+        return diff3 < -6 ? "sameElse" : diff3 < -1 ? "lastWeek" : diff3 < 0 ? "lastDay" : diff3 < 1 ? "sameDay" : diff3 < 2 ? "nextDay" : diff3 < 7 ? "nextWeek" : "sameElse";
       }
       function calendar$1(time, formats) {
         if (arguments.length === 1) {
@@ -16871,7 +16871,7 @@ var require_moment = __commonJS({
       function isSameOrBefore(input, units) {
         return this.isSame(input, units) || this.isBefore(input, units);
       }
-      function diff(input, units, asFloat) {
+      function diff2(input, units, asFloat) {
         var that, zoneDelta, output;
         if (!this.isValid()) {
           return NaN;
@@ -17539,7 +17539,7 @@ var require_moment = __commonJS({
       proto.add = add;
       proto.calendar = calendar$1;
       proto.clone = clone;
-      proto.diff = diff;
+      proto.diff = diff2;
       proto.endOf = endOf;
       proto.format = format;
       proto.from = from;
@@ -18324,9 +18324,9 @@ var require_moment_timezone = __commonJS({
         }
       };
       function findChange(low, high) {
-        var mid, diff;
-        while (diff = ((high.at - low.at) / 12e4 | 0) * 6e4) {
-          mid = new OffsetAt(new Date(low.at + diff));
+        var mid, diff2;
+        while (diff2 = ((high.at - low.at) / 12e4 | 0) * 6e4) {
+          mid = new OffsetAt(new Date(low.at + diff2));
           if (mid.offset === low.offset) {
             low = mid;
           } else {
@@ -26522,7 +26522,7 @@ var require_base = __commonJS({
   "node_modules/sequelize/dist/lib/associations/base.js"(exports, module2) {
     "use strict";
     var { AssociationError: AssociationError2 } = require_errors();
-    var Association6 = class {
+    var Association9 = class {
       constructor(source, target, options = {}) {
         this.source = source;
         this.target = target;
@@ -26551,7 +26551,7 @@ var require_base = __commonJS({
         return this.as;
       }
     };
-    module2.exports = Association6;
+    module2.exports = Association9;
   }
 });
 
@@ -26578,9 +26578,9 @@ var require_belongs_to = __commonJS({
     var Utils2 = require_utils();
     var Helpers = require_helpers();
     var _ = require_lodash();
-    var Association6 = require_base();
+    var Association9 = require_base();
     var Op2 = require_operators();
-    var BelongsTo2 = class extends Association6 {
+    var BelongsTo2 = class extends Association9 {
       constructor(source, target, options) {
         super(source, target, options);
         this.associationType = "BelongsTo";
@@ -26758,9 +26758,9 @@ var require_has_many = __commonJS({
     var Utils2 = require_utils();
     var Helpers = require_helpers();
     var _ = require_lodash();
-    var Association6 = require_base();
+    var Association9 = require_base();
     var Op2 = require_operators();
-    var HasMany2 = class extends Association6 {
+    var HasMany2 = class extends Association9 {
       constructor(source, target, options) {
         super(source, target, options);
         this.associationType = "HasMany";
@@ -27079,9 +27079,9 @@ var require_has_one = __commonJS({
     var Utils2 = require_utils();
     var Helpers = require_helpers();
     var _ = require_lodash();
-    var Association6 = require_base();
+    var Association9 = require_base();
     var Op2 = require_operators();
-    var HasOne2 = class extends Association6 {
+    var HasOne2 = class extends Association9 {
       constructor(source, target, options) {
         super(source, target, options);
         this.associationType = "HasOne";
@@ -27275,14 +27275,14 @@ var require_belongs_to_many = __commonJS({
     var Utils2 = require_utils();
     var Helpers = require_helpers();
     var _ = require_lodash();
-    var Association6 = require_base();
+    var Association9 = require_base();
     var BelongsTo2 = require_belongs_to();
     var HasMany2 = require_has_many();
     var HasOne2 = require_has_one();
     var AssociationError2 = require_errors().AssociationError;
     var EmptyResultError2 = require_errors().EmptyResultError;
     var Op2 = require_operators();
-    var BelongsToMany2 = class extends Association6 {
+    var BelongsToMany2 = class extends Association9 {
       constructor(source, target, options) {
         super(source, target, options);
         if (this.options.through === void 0 || this.options.through === true || this.options.through === null) {
@@ -28383,7 +28383,7 @@ var require_model = __commonJS({
     var InstanceValidator = require_instance_validator();
     var QueryTypes2 = require_query_types();
     var sequelizeErrors = require_errors();
-    var Association6 = require_base();
+    var Association9 = require_base();
     var HasMany2 = require_has_many();
     var DataTypes2 = require_data_types8();
     var Hooks = require_hooks();
@@ -28623,7 +28623,7 @@ var require_model = __commonJS({
           if (include._pseudo)
             return include;
           include = this._transformStringAssociation(include, self2);
-          if (include instanceof Association6) {
+          if (include instanceof Association9) {
             if (self2 && include.target.name === self2.name) {
               model = include.source;
             } else {
@@ -31485,14 +31485,14 @@ var require_index_hints = __commonJS({
 var require_associations = __commonJS({
   "node_modules/sequelize/dist/lib/associations/index.js"(exports, module2) {
     "use strict";
-    var Association6 = require_base();
-    Association6.BelongsTo = require_belongs_to();
-    Association6.HasOne = require_has_one();
-    Association6.HasMany = require_has_many();
-    Association6.BelongsToMany = require_belongs_to_many();
-    module2.exports = Association6;
-    module2.exports.default = Association6;
-    module2.exports.Association = Association6;
+    var Association9 = require_base();
+    Association9.BelongsTo = require_belongs_to();
+    Association9.HasOne = require_has_one();
+    Association9.HasMany = require_has_many();
+    Association9.BelongsToMany = require_belongs_to_many();
+    module2.exports = Association9;
+    module2.exports.default = Association9;
+    module2.exports.Association = Association9;
   }
 });
 
@@ -32570,7 +32570,7 @@ var require_diff = __commonJS({
   "node_modules/semver/functions/diff.js"(exports, module2) {
     var parse = require_parse2();
     var eq = require_eq();
-    var diff = (version1, version2) => {
+    var diff2 = (version1, version2) => {
       if (eq(version1, version2)) {
         return null;
       } else {
@@ -32589,7 +32589,7 @@ var require_diff = __commonJS({
         return defaultResult;
       }
     };
-    module2.exports = diff;
+    module2.exports = diff2;
   }
 });
 
@@ -33415,8 +33415,8 @@ var require_lru_cache = __commonJS({
     var isStale = (self2, hit) => {
       if (!hit || !hit.maxAge && !self2[MAX_AGE])
         return false;
-      const diff = Date.now() - hit.now;
-      return hit.maxAge ? diff > hit.maxAge : self2[MAX_AGE] && diff > self2[MAX_AGE];
+      const diff2 = Date.now() - hit.now;
+      return hit.maxAge ? diff2 > hit.maxAge : self2[MAX_AGE] && diff2 > self2[MAX_AGE];
     };
     var trim = (self2) => {
       if (self2[LENGTH] > self2[MAX]) {
@@ -34645,10 +34645,10 @@ var require_Pool = __commonJS({
         this._inUseObjects.push(wrappedResource);
       }
       _ensureMinimum() {
-        let i, diff;
+        let i, diff2;
         if (!this._draining && this.size < this.minSize) {
-          diff = this.minSize - this.size;
-          for (i = 0; i < diff; i++) {
+          diff2 = this.minSize - this.size;
+          for (i = 0; i < diff2; i++) {
             this._createResource();
           }
         }
@@ -36141,7 +36141,7 @@ var require_query_generator = __commonJS({
     var SqlString = require_sql_string();
     var DataTypes2 = require_data_types8();
     var Model2 = require_model();
-    var Association6 = require_base();
+    var Association9 = require_base();
     var BelongsTo2 = require_belongs_to();
     var BelongsToMany2 = require_belongs_to_many();
     var HasMany2 = require_has_many();
@@ -36667,7 +36667,7 @@ var require_query_generator = __commonJS({
             let previousModel;
             if (!previous && parent !== void 0) {
               previousModel = parent;
-            } else if (previous && previous instanceof Association6) {
+            } else if (previous && previous instanceof Association9) {
               previousAssociation = previous;
               previousModel = previous.target;
             }
@@ -36681,8 +36681,8 @@ var require_query_generator = __commonJS({
                 as = item2.as;
               }
               if (model) {
-                if (!as && previousAssociation && previousAssociation instanceof Association6 && previousAssociation.through && previousAssociation.through.model === model) {
-                  item2 = new Association6(previousModel, model, {
+                if (!as && previousAssociation && previousAssociation instanceof Association9 && previousAssociation.through && previousAssociation.through.model === model) {
+                  item2 = new Association9(previousModel, model, {
                     as: model.name
                   });
                 } else {
@@ -36691,7 +36691,7 @@ var require_query_generator = __commonJS({
                     item2 = previousModel.getAssociationForAlias(model, model.name);
                   }
                 }
-                if (!(item2 instanceof Association6)) {
+                if (!(item2 instanceof Association9)) {
                   throw new Error(util.format("Unable to find a valid association for model, '%s'", model.name));
                 }
               }
@@ -36726,7 +36726,7 @@ var require_query_generator = __commonJS({
             item = collection[i];
             if (typeof item === "string" || item._modelAttribute || item instanceof Utils2.SequelizeMethod) {
               break;
-            } else if (item instanceof Association6) {
+            } else if (item instanceof Association9) {
               tableNames[i] = item.as;
             }
           }
@@ -36884,9 +36884,9 @@ var require_query_generator = __commonJS({
             }
             return `json_unquote(json_extract(${quotedColumn},${pathStr}))`;
           case "postgres":
-            const join = isJson ? "#>" : "#>>";
+            const join2 = isJson ? "#>" : "#>>";
             pathStr = this.escape(`{${paths.join(",")}}`);
-            return `(${quotedColumn}${join}${pathStr})`;
+            return `(${quotedColumn}${join2}${pathStr})`;
           default:
             throw new Error(`Unsupported ${this.dialect} for JSON operations`);
         }
@@ -37552,7 +37552,7 @@ var require_query_generator = __commonJS({
           const isBelongsTo = topAssociation.associationType === "BelongsTo";
           const sourceField = isBelongsTo ? topAssociation.identifierField : topAssociation.sourceKeyField || topParent.model.primaryKeyField;
           const targetField = isBelongsTo ? topAssociation.sourceKeyField || topInclude.model.primaryKeyField : topAssociation.identifierField;
-          const join = [
+          const join2 = [
             `${this.quoteIdentifier(topInclude.as)}.${this.quoteIdentifier(targetField)}`,
             `${this.quoteTable(topParent.as || topParent.model.name)}.${this.quoteIdentifier(sourceField)}`
           ].join(" = ");
@@ -37563,7 +37563,7 @@ var require_query_generator = __commonJS({
             where: {
               [Op2.and]: [
                 topInclude.where,
-                { [Op2.join]: this.sequelize.literal(join) }
+                { [Op2.join]: this.sequelize.literal(join2) }
               ]
             },
             limit: 1,
@@ -37596,7 +37596,7 @@ var require_query_generator = __commonJS({
             if (!Array.isArray(order)) {
               order = [order];
             }
-            if (subQuery && Array.isArray(order) && order[0] && !(order[0] instanceof Association6) && !(typeof order[0] === "function" && order[0].prototype instanceof Model2) && !(typeof order[0].model === "function" && order[0].model.prototype instanceof Model2) && !(typeof order[0] === "string" && model && model.associations !== void 0 && model.associations[order[0]])) {
+            if (subQuery && Array.isArray(order) && order[0] && !(order[0] instanceof Association9) && !(typeof order[0] === "function" && order[0].prototype instanceof Model2) && !(typeof order[0].model === "function" && order[0].model.prototype instanceof Model2) && !(typeof order[0] === "string" && model && model.associations !== void 0 && model.associations[order[0]])) {
               subQueryOrder.push(this.quote(order, model, "->"));
             }
             if (subQuery) {
@@ -46062,7 +46062,7 @@ var require_sequelize = __commonJS({
     var IndexHints2 = require_index_hints();
     var sequelizeErrors = require_errors();
     var Hooks = require_hooks();
-    var Association6 = require_associations();
+    var Association9 = require_associations();
     var Validator2 = require_validator_extras().validator;
     var Op2 = require_operators();
     var deprecations = require_deprecations();
@@ -46619,7 +46619,7 @@ var require_sequelize = __commonJS({
       Sequelize2[dataType] = DataTypes2[dataType];
     }
     Sequelize2.Deferrable = Deferrable2;
-    Sequelize2.prototype.Association = Sequelize2.Association = Association6;
+    Sequelize2.prototype.Association = Sequelize2.Association = Association9;
     Sequelize2.useInflection = Utils2.useInflection;
     Hooks.applyTo(Sequelize2);
     Hooks.applyTo(Sequelize2.prototype);
@@ -64716,14 +64716,14 @@ var require_lib3 = __commonJS({
       return `"${reescaped}"`;
     }
     exports.canonicalize_quoted_string = canonicalize_quoted_string;
-    function canonicalize(address) {
+    function canonicalize2(address) {
       var _a;
       const a = parse(address);
       const domain = (_a = a.domainPart.AddressLiteral) !== null && _a !== void 0 ? _a : a.domainPart.DomainName.toLowerCase();
       const local = a.localPart.QuotedString ? canonicalize_quoted_string(a.localPart.QuotedString) : a.localPart.DotString;
       return `${local}@${domain}`;
     }
-    exports.canonicalize = canonicalize;
+    exports.canonicalize = canonicalize2;
   }
 });
 
@@ -67507,7 +67507,7 @@ function getSequlize() {
     dialect: "postgres",
     host: "localhost",
     port: 6543,
-    database: "steroid",
+    database: "steroid2",
     username: "user",
     password: "password",
     pool: {
@@ -67557,6 +67557,93 @@ Client.init({
   }
 }, { sequelize, timestamps: true, tableName: "clients", name: { plural: "clients", singular: "client" } });
 
+// src/models/Release.ts
+var Release = class extends Model {
+  static associate() {
+    this.codePlaces = Release.hasMany(CodePlace, { foreignKey: "releaseId", as: "codePlaces" });
+  }
+};
+Release.init({
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  commit: {
+    type: DataTypes.STRING
+  },
+  status: {
+    type: DataTypes.STRING
+  }
+}, { sequelize, tableName: "releases" });
+
+// src/models/CodePlace.ts
+var CodePlace = class extends Model {
+  static associate() {
+    this.release = CodePlace.belongsTo(Release, { foreignKey: "releaseId" });
+    this.tracker = CodePlace.belongsTo(Tracker, { foreignKey: "trackerId" });
+  }
+};
+CodePlace.init({
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  trackerId: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  }
+}, { sequelize, tableName: "codePlace", name: { plural: "codePlaces", singular: "codePlace" } });
+
+// src/models/Tracker.ts
+var Tracker = class extends Model {
+  static associate() {
+    this.measurements = this.hasMany(Measurement, { foreignKey: "trackerId" });
+    this.codePlaces = this.hasMany(CodePlace, { foreignKey: "trackerId" });
+  }
+};
+Tracker.init({
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  name: {
+    type: DataTypes.STRING
+  }
+}, { sequelize, timestamps: true, tableName: "trackers", name: { singular: "tracker", plural: "traces" } });
+
+// src/models/Measurement.ts
+var Measurement = class extends Model {
+  static associate() {
+    Measurement.belongsTo(Tracker, { foreignKey: "trackerId" });
+  }
+};
+Measurement.init({
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  trackerId: {
+    type: DataTypes.INTEGER
+  },
+  seconds: {
+    type: DataTypes.INTEGER
+  },
+  nanoseconds: {
+    type: DataTypes.INTEGER
+  }
+}, {
+  sequelize,
+  tableName: "measurements",
+  name: {
+    singular: "measurement",
+    plural: "measurements"
+  }
+});
+
 // src/models/Trace.ts
 var Trace = class extends Model {
   static associate() {
@@ -67587,53 +67674,16 @@ Trace.init({
   }
 }, { sequelize, timestamps: true, tableName: "traces", name: { singular: "trace", plural: "traces" } });
 
-// src/models/Measurement.ts
-var Measurement = class extends Model {
-  static associate() {
-    Measurement.belongsTo(Trace, { foreignKey: "traceId" });
-  }
-};
-Measurement.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  traceId: {
-    type: DataTypes.INTEGER
-  },
-  seconds: {
-    type: DataTypes.INTEGER
-  },
-  nanoseconds: {
-    type: DataTypes.INTEGER
-  }
-}, {
-  sequelize,
-  tableName: "measurements",
-  name: {
-    singular: "measurement",
-    plural: "measurements"
-  }
-});
-
 // src/models/index.ts
 function initAssociations() {
   Client.associate();
   Environment.associate();
   Measurement.associate();
-  Trace.associate();
+  CodePlace.associate();
+  Release.associate();
+  Tracker.associate();
 }
 initAssociations();
-
-// src/services/environment.service.ts
-function getEnvironemnt(token) {
-  return Environment.findOne({
-    where: {
-      token: token || null
-    }
-  });
-}
 
 // src/functions/uploadSources/schema.ts
 var schema_default = {
@@ -67641,6 +67691,20 @@ var schema_default = {
   properties: {
     commit: {
       type: "string"
+    },
+    files: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          path: {
+            "type": "string"
+          },
+          content: {
+            "type": "string"
+          }
+        }
+      }
     }
   }
 };
@@ -67673,35 +67737,409 @@ var S32 = new AWS.S3({
   endpoint: new AWS.Endpoint("http://localhost:4569")
 });
 
-// src/functions/uploadSources/handler.ts
-var upload = async (event) => {
-  const env = await getEnvironemnt(event.headers["token"]);
-  if (!env) {
-    console.error("env not found", event.headers["token"]);
-    return {
-      statusCode: 404,
-      body: JSON.stringify({
-        error: "env not found"
-      })
+// src/services/storage.service.ts
+async function getFile(commit, path) {
+  const [result] = await sequelize.query(`SELECT "content" FROM "files" WHERE "commit" = ${commit} AND "path" = ${path}`);
+  return result[0].content;
+}
+
+// node_modules/diff/lib/index.mjs
+function Diff() {
+}
+Diff.prototype = {
+  diff: function diff(oldString, newString) {
+    var options = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : {};
+    var callback = options.callback;
+    if (typeof options === "function") {
+      callback = options;
+      options = {};
+    }
+    this.options = options;
+    var self2 = this;
+    function done(value) {
+      if (callback) {
+        setTimeout(function() {
+          callback(void 0, value);
+        }, 0);
+        return true;
+      } else {
+        return value;
+      }
+    }
+    oldString = this.castInput(oldString);
+    newString = this.castInput(newString);
+    oldString = this.removeEmpty(this.tokenize(oldString));
+    newString = this.removeEmpty(this.tokenize(newString));
+    var newLen = newString.length, oldLen = oldString.length;
+    var editLength = 1;
+    var maxEditLength = newLen + oldLen;
+    var bestPath = [{
+      newPos: -1,
+      components: []
+    }];
+    var oldPos = this.extractCommon(bestPath[0], newString, oldString, 0);
+    if (bestPath[0].newPos + 1 >= newLen && oldPos + 1 >= oldLen) {
+      return done([{
+        value: this.join(newString),
+        count: newString.length
+      }]);
+    }
+    function execEditLength() {
+      for (var diagonalPath = -1 * editLength; diagonalPath <= editLength; diagonalPath += 2) {
+        var basePath = void 0;
+        var addPath = bestPath[diagonalPath - 1], removePath = bestPath[diagonalPath + 1], _oldPos = (removePath ? removePath.newPos : 0) - diagonalPath;
+        if (addPath) {
+          bestPath[diagonalPath - 1] = void 0;
+        }
+        var canAdd = addPath && addPath.newPos + 1 < newLen, canRemove = removePath && 0 <= _oldPos && _oldPos < oldLen;
+        if (!canAdd && !canRemove) {
+          bestPath[diagonalPath] = void 0;
+          continue;
+        }
+        if (!canAdd || canRemove && addPath.newPos < removePath.newPos) {
+          basePath = clonePath(removePath);
+          self2.pushComponent(basePath.components, void 0, true);
+        } else {
+          basePath = addPath;
+          basePath.newPos++;
+          self2.pushComponent(basePath.components, true, void 0);
+        }
+        _oldPos = self2.extractCommon(basePath, newString, oldString, diagonalPath);
+        if (basePath.newPos + 1 >= newLen && _oldPos + 1 >= oldLen) {
+          return done(buildValues(self2, basePath.components, newString, oldString, self2.useLongestToken));
+        } else {
+          bestPath[diagonalPath] = basePath;
+        }
+      }
+      editLength++;
+    }
+    if (callback) {
+      (function exec() {
+        setTimeout(function() {
+          if (editLength > maxEditLength) {
+            return callback();
+          }
+          if (!execEditLength()) {
+            exec();
+          }
+        }, 0);
+      })();
+    } else {
+      while (editLength <= maxEditLength) {
+        var ret = execEditLength();
+        if (ret) {
+          return ret;
+        }
+      }
+    }
+  },
+  pushComponent: function pushComponent(components, added, removed) {
+    var last = components[components.length - 1];
+    if (last && last.added === added && last.removed === removed) {
+      components[components.length - 1] = {
+        count: last.count + 1,
+        added,
+        removed
+      };
+    } else {
+      components.push({
+        count: 1,
+        added,
+        removed
+      });
+    }
+  },
+  extractCommon: function extractCommon(basePath, newString, oldString, diagonalPath) {
+    var newLen = newString.length, oldLen = oldString.length, newPos = basePath.newPos, oldPos = newPos - diagonalPath, commonCount = 0;
+    while (newPos + 1 < newLen && oldPos + 1 < oldLen && this.equals(newString[newPos + 1], oldString[oldPos + 1])) {
+      newPos++;
+      oldPos++;
+      commonCount++;
+    }
+    if (commonCount) {
+      basePath.components.push({
+        count: commonCount
+      });
+    }
+    basePath.newPos = newPos;
+    return oldPos;
+  },
+  equals: function equals(left, right) {
+    if (this.options.comparator) {
+      return this.options.comparator(left, right);
+    } else {
+      return left === right || this.options.ignoreCase && left.toLowerCase() === right.toLowerCase();
+    }
+  },
+  removeEmpty: function removeEmpty(array) {
+    var ret = [];
+    for (var i = 0; i < array.length; i++) {
+      if (array[i]) {
+        ret.push(array[i]);
+      }
+    }
+    return ret;
+  },
+  castInput: function castInput(value) {
+    return value;
+  },
+  tokenize: function tokenize(value) {
+    return value.split("");
+  },
+  join: function join(chars) {
+    return chars.join("");
+  }
+};
+function buildValues(diff2, components, newString, oldString, useLongestToken) {
+  var componentPos = 0, componentLen = components.length, newPos = 0, oldPos = 0;
+  for (; componentPos < componentLen; componentPos++) {
+    var component = components[componentPos];
+    if (!component.removed) {
+      if (!component.added && useLongestToken) {
+        var value = newString.slice(newPos, newPos + component.count);
+        value = value.map(function(value2, i) {
+          var oldValue = oldString[oldPos + i];
+          return oldValue.length > value2.length ? oldValue : value2;
+        });
+        component.value = diff2.join(value);
+      } else {
+        component.value = diff2.join(newString.slice(newPos, newPos + component.count));
+      }
+      newPos += component.count;
+      if (!component.added) {
+        oldPos += component.count;
+      }
+    } else {
+      component.value = diff2.join(oldString.slice(oldPos, oldPos + component.count));
+      oldPos += component.count;
+      if (componentPos && components[componentPos - 1].added) {
+        var tmp = components[componentPos - 1];
+        components[componentPos - 1] = components[componentPos];
+        components[componentPos] = tmp;
+      }
+    }
+  }
+  var lastComponent = components[componentLen - 1];
+  if (componentLen > 1 && typeof lastComponent.value === "string" && (lastComponent.added || lastComponent.removed) && diff2.equals("", lastComponent.value)) {
+    components[componentLen - 2].value += lastComponent.value;
+    components.pop();
+  }
+  return components;
+}
+function clonePath(path) {
+  return {
+    newPos: path.newPos,
+    components: path.components.slice(0)
+  };
+}
+var characterDiff = new Diff();
+var extendedWordChars = /^[A-Za-z\xC0-\u02C6\u02C8-\u02D7\u02DE-\u02FF\u1E00-\u1EFF]+$/;
+var reWhitespace = /\S/;
+var wordDiff = new Diff();
+wordDiff.equals = function(left, right) {
+  if (this.options.ignoreCase) {
+    left = left.toLowerCase();
+    right = right.toLowerCase();
+  }
+  return left === right || this.options.ignoreWhitespace && !reWhitespace.test(left) && !reWhitespace.test(right);
+};
+wordDiff.tokenize = function(value) {
+  var tokens = value.split(/([^\S\r\n]+|[()[\]{}'"\r\n]|\b)/);
+  for (var i = 0; i < tokens.length - 1; i++) {
+    if (!tokens[i + 1] && tokens[i + 2] && extendedWordChars.test(tokens[i]) && extendedWordChars.test(tokens[i + 2])) {
+      tokens[i] += tokens[i + 2];
+      tokens.splice(i + 1, 2);
+      i--;
+    }
+  }
+  return tokens;
+};
+var lineDiff = new Diff();
+lineDiff.tokenize = function(value) {
+  var retLines = [], linesAndNewlines = value.split(/(\n|\r\n)/);
+  if (!linesAndNewlines[linesAndNewlines.length - 1]) {
+    linesAndNewlines.pop();
+  }
+  for (var i = 0; i < linesAndNewlines.length; i++) {
+    var line = linesAndNewlines[i];
+    if (i % 2 && !this.options.newlineIsToken) {
+      retLines[retLines.length - 1] += line;
+    } else {
+      if (this.options.ignoreWhitespace) {
+        line = line.trim();
+      }
+      retLines.push(line);
+    }
+  }
+  return retLines;
+};
+function diffLines(oldStr, newStr, callback) {
+  return lineDiff.diff(oldStr, newStr, callback);
+}
+var sentenceDiff = new Diff();
+sentenceDiff.tokenize = function(value) {
+  return value.split(/(\S.+?[.!?])(?=\s+|$)/);
+};
+var cssDiff = new Diff();
+cssDiff.tokenize = function(value) {
+  return value.split(/([{}:;,]|\s+)/);
+};
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function(obj2) {
+      return typeof obj2;
+    };
+  } else {
+    _typeof = function(obj2) {
+      return obj2 && typeof Symbol === "function" && obj2.constructor === Symbol && obj2 !== Symbol.prototype ? "symbol" : typeof obj2;
     };
   }
-  const randomID = parseInt(Math.random() * 1e7 + "");
-  const signedUrl = await S32.getSignedUrlPromise("putObject", {
-    Bucket: "local-bucket",
-    Key: `sources/env:${env.id}/commit:${event.body.commit}/${randomID}`,
-    Expires: 60 * 5,
-    ContentType: "application/zip",
-    Metadata: {
-      "test1": "testasdzxc"
+  return _typeof(obj);
+}
+var objectPrototypeToString = Object.prototype.toString;
+var jsonDiff = new Diff();
+jsonDiff.useLongestToken = true;
+jsonDiff.tokenize = lineDiff.tokenize;
+jsonDiff.castInput = function(value) {
+  var _this$options = this.options, undefinedReplacement = _this$options.undefinedReplacement, _this$options$stringi = _this$options.stringifyReplacer, stringifyReplacer = _this$options$stringi === void 0 ? function(k, v) {
+    return typeof v === "undefined" ? undefinedReplacement : v;
+  } : _this$options$stringi;
+  return typeof value === "string" ? value : JSON.stringify(canonicalize(value, null, null, stringifyReplacer), stringifyReplacer, "  ");
+};
+jsonDiff.equals = function(left, right) {
+  return Diff.prototype.equals.call(jsonDiff, left.replace(/,([\r\n])/g, "$1"), right.replace(/,([\r\n])/g, "$1"));
+};
+function canonicalize(obj, stack, replacementStack, replacer, key) {
+  stack = stack || [];
+  replacementStack = replacementStack || [];
+  if (replacer) {
+    obj = replacer(key, obj);
+  }
+  var i;
+  for (i = 0; i < stack.length; i += 1) {
+    if (stack[i] === obj) {
+      return replacementStack[i];
     }
+  }
+  var canonicalizedObj;
+  if (objectPrototypeToString.call(obj) === "[object Array]") {
+    stack.push(obj);
+    canonicalizedObj = new Array(obj.length);
+    replacementStack.push(canonicalizedObj);
+    for (i = 0; i < obj.length; i += 1) {
+      canonicalizedObj[i] = canonicalize(obj[i], stack, replacementStack, replacer, key);
+    }
+    stack.pop();
+    replacementStack.pop();
+    return canonicalizedObj;
+  }
+  if (obj && obj.toJSON) {
+    obj = obj.toJSON();
+  }
+  if (_typeof(obj) === "object" && obj !== null) {
+    stack.push(obj);
+    canonicalizedObj = {};
+    replacementStack.push(canonicalizedObj);
+    var sortedKeys = [], _key;
+    for (_key in obj) {
+      if (obj.hasOwnProperty(_key)) {
+        sortedKeys.push(_key);
+      }
+    }
+    sortedKeys.sort();
+    for (i = 0; i < sortedKeys.length; i += 1) {
+      _key = sortedKeys[i];
+      canonicalizedObj[_key] = canonicalize(obj[_key], stack, replacementStack, replacer, _key);
+    }
+    stack.pop();
+    replacementStack.pop();
+  } else {
+    canonicalizedObj = obj;
+  }
+  return canonicalizedObj;
+}
+var arrayDiff = new Diff();
+arrayDiff.tokenize = function(value) {
+  return value.slice();
+};
+arrayDiff.join = arrayDiff.removeEmpty = function(value) {
+  return value;
+};
+
+// src/functions/uploadSources/handler.ts
+var upload = async (event) => {
+  var _a;
+  const token = event.headers["token"];
+  const newFiles = event.body.files;
+  console.log("1", event.body);
+  const previousRelease = await Release.findOne({
+    include: [Release.codePlaces],
+    order: [["createdAt", "DESC"]]
   });
+  console.log("2", previousRelease);
+  const newRelease = Release.build({ commit: event.body.commit, status: "created" });
+  if (previousRelease) {
+    for (const codePlace of previousRelease.codePlaces) {
+      const currentFileContent = (_a = newFiles.find((file) => file.path === codePlace.fileName)) == null ? void 0 : _a.content;
+      if (!currentFileContent) {
+        continue;
+      }
+      const previousFileContent = await getFile(previousRelease.commit, codePlace.fileName);
+      if (!previousFileContent) {
+        continue;
+      }
+      const offset = getOffsetIfCodeSame(codePlace.startLine, codePlace.endLine, previousFileContent, currentFileContent);
+      if (offset !== void 0) {
+        newRelease.codePlaces.push(CodePlace.build(__spreadProps(__spreadValues({}, codePlace), {
+          startLine: codePlace.startLine + offset,
+          endLine: codePlace.endLine + offset
+        })));
+      }
+    }
+  }
+  newRelease.status = "processed";
+  await newRelease.save();
   return {
     statusCode: 200,
-    body: JSON.stringify({
-      url: signedUrl
-    })
+    body: "{}"
   };
 };
+function getOffsetIfCodeSame(previousLineStart, previousLineEnd, previousFileContent, newFileConent) {
+  const diffs = diffLines(previousFileContent, newFileConent);
+  const offset = getOffset(previousLineStart, previousLineEnd, diffs);
+  return offset;
+}
+function getOffset(trackingOriginalStartlLine, trackingOriginalEndLine, diffs) {
+  let originalIndex = 0;
+  let modifiedIndex = 0;
+  for (const diff2 of diffs) {
+    console.log("diff", diff2);
+    console.log("trackingOriginalStartlLine", trackingOriginalStartlLine);
+    console.log("trackingOriginalEndLine", trackingOriginalEndLine);
+    console.log("originalIndex", originalIndex);
+    console.log("modifiedIndex", modifiedIndex);
+    console.log("===============");
+    if (trackingOriginalStartlLine >= originalIndex + 1 && trackingOriginalEndLine < 1 + originalIndex + (diff2.count || 0) && (diff2.removed || !diff2.removed && !diff2.added)) {
+      if (diff2.removed) {
+        return void 0;
+      } else {
+        const localOffset = trackingOriginalStartlLine - originalIndex - 1;
+        return modifiedIndex - originalIndex;
+      }
+    }
+    if (diff2.removed) {
+      originalIndex += diff2.count || 0;
+    } else if (diff2.added) {
+      modifiedIndex += diff2.count || 0;
+    } else {
+      modifiedIndex += diff2.count || 0;
+      originalIndex += diff2.count || 0;
+    }
+  }
+  console.log("originalIndex", originalIndex);
+  console.log("modifiedIndex", modifiedIndex);
+}
 var main = middyfy(upload, { schema: schema_default });
 module.exports = __toCommonJS(handler_exports);
 // Annotate the CommonJS export names for ESM import in node:

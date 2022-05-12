@@ -5,7 +5,7 @@ export function getSequlize() {
         dialect: 'postgres',
         host: 'localhost',
         port: 6543,
-        database: 'steroid',
+        database: 'steroid2',
         username: 'user',
         password: 'password',
         pool: {

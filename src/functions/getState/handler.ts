@@ -1,9 +1,53 @@
 import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
+import { Release } from 'src/models/Release';
 import { getClientByApiKey } from 'src/services/client.service';
 import { getTraceState } from 'src/services/trace.service';
+import { Op } from 'sequelize';
+import { CodePlace } from 'src/models/CodePlace';
+import { Tracker } from 'src/models/Tracker';
 
-const getState: ValidatedEventAPIGatewayProxyEvent<undefined> = async (event) => {
+function findLatestRelease(commits: string[]) {
+    return Release.findOne({
+        where: {
+            commit: {
+                [Op.in]: commits,
+            },
+        },
+        include: [{
+            association: Release.codePlaces,
+            include: [{
+                association: CodePlace.tracker,
+                include: [{
+                    association: Tracker.measurements,
+                }],
+            }],
+        }],
+        order: [['createdAt', 'DESC']],
+    });
+}
+
+const getState : ValidatedEventAPIGatewayProxyEvent<any> = async (event) => {
+    const commits = event.body.commits;
+
+    const latestRelease = await findLatestRelease(commits);
+
+    if (!latestRelease) {
+        return {
+            statusCode: 200,
+            body: null,
+        };
+    }
+
+    return {
+        statusCode: 200,
+        body: JSON.stringify({
+            latestRelease,
+        }),
+    };
+}
+
+const getState2: ValidatedEventAPIGatewayProxyEvent<undefined> = async (event) => {
     const apiKey = event.headers['apiKey'];
 
     if (!apiKey) {
