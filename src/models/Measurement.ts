@@ -71,12 +71,15 @@ Measurement.init(
         trackerId: {
             type: DataTypes.INTEGER
         },
-        seconds: {
-            type: DataTypes.INTEGER,
-        },
-        nanoseconds: {
-            type: DataTypes.INTEGER,
-        },
+        // seconds: {
+        //     type: DataTypes.INTEGER,
+        // },
+        // nanoseconds: {
+        //     type: DataTypes.INTEGER,
+        // },
+        executionTime: {
+            type: DataTypes.INTEGER
+        }
     }, {
         sequelize,
         tableName: 'measurements',

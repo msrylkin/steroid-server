@@ -8,48 +8,68 @@ import { Release } from 'src/models/Release';
 import { CodePlace } from 'src/models/CodePlace';
 import { getFile } from 'src/services/storage.service';
 import * as diff from 'diff';
+import { sequelize } from '@libs/sequelize';
 
 const upload: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
     const token = event.headers['token'];
     const newFiles = event.body.files!;
-    console.log('1', event.body)
+    // console.log('1', event.body)
 
     const previousRelease = await Release.findOne({
+        where: {
+            status: 'active',
+        },
         include: [Release.codePlaces],
         order: [['createdAt', 'DESC']],
     });
-    console.log('2', previousRelease)
+    // console.log('2', previousRelease)
 
-    const newRelease = Release.build({ commit: event.body.commit, status: 'created' });
+    const newRelease = await Release.create({ commit: event.body.commit, status: 'created' });
 
     if (previousRelease) {
         for (const codePlace of previousRelease.codePlaces) {
             const currentFileContent = newFiles.find(file => file.path === codePlace.fileName)?.content;
+            // console.log('currentFileContent', currentFileContent)
 
             if (!currentFileContent) {
                 continue;
             }
 
-            const previousFileContent = await getFile(previousRelease.commit, codePlace.fileName);
+            const previousFileContent = await getFile(previousRelease.id, codePlace.fileName);
+            // console.log('previousFileContent', previousFileContent)
 
             if (!previousFileContent) {
                 continue;
             }
 
             const offset = getOffsetIfCodeSame(codePlace.startLine, codePlace.endLine, previousFileContent, currentFileContent as string);
+            console.log('offset', offset)
 
             if (offset !== undefined) {
-                newRelease.codePlaces.push(CodePlace.build({
-                    ...codePlace,
+                // if (!newRelease.codePlaces) {
+                //     newRelease.codePlaces = [];
+                // }
+                // newRelease.codePlaces.push(CodePlace.build({
+                //     ...codePlace,
+                //     startLine: codePlace.startLine + offset,
+                //     endLine: codePlace.endLine + offset,
+                // }));
+                console.log('currentCodePlace', codePlace.toJSON());
+                
+                const createdCodePlace = await CodePlace.create({
+                    ...codePlace.toJSON(),
                     startLine: codePlace.startLine + offset,
                     endLine: codePlace.endLine + offset,
-                }));
+                    releaseId: newRelease.id,
+                    id: undefined,
+                    // trackerId: codePlace.trackerId,
+                });
+                await sequelize.query(`INSERT INTO "files" (content, "codePlaceId", "releaseId") VALUES ('${currentFileContent}', ${createdCodePlace.id}, ${newRelease.id})`);
             }
         }
     }
 
-    newRelease.status = 'processed';
-
+    newRelease.status = 'active';
     await newRelease.save();
 
     return {

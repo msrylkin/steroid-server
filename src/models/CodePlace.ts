@@ -15,6 +15,8 @@ export class CodePlace extends Model {
     endLine: number;
     endColumn: number;
     status: string;
+    executionTime: number;
+    hitCount: number;
 
     release?: Release;
     tracker?: Tracker;
@@ -37,5 +39,32 @@ CodePlace.init({
     trackerId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+    },
+    fileName: {
+        type: DataTypes.STRING
+    },
+    startLine: {
+        type: DataTypes.INTEGER,
+    },
+    endLine: {
+        type: DataTypes.INTEGER,
+    },
+    startColumn: {
+        type: DataTypes.INTEGER,
+    },
+    endColumn: {
+        type: DataTypes.INTEGER,
+    },
+    status: {
+        type: DataTypes.STRING,
+    },
+    type: {
+        type: DataTypes.STRING,
+    },
+    executionTime: {
+        type: DataTypes.INTEGER,
+    },
+    hitCount: {
+        type: DataTypes.INTEGER,
     },
 }, { sequelize, tableName: 'codePlace', name: { plural: 'codePlaces', singular: 'codePlace' } });

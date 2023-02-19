@@ -67593,6 +67593,33 @@ CodePlace.init({
   trackerId: {
     type: DataTypes.INTEGER,
     allowNull: false
+  },
+  fileName: {
+    type: DataTypes.STRING
+  },
+  startLine: {
+    type: DataTypes.INTEGER
+  },
+  endLine: {
+    type: DataTypes.INTEGER
+  },
+  startColumn: {
+    type: DataTypes.INTEGER
+  },
+  endColumn: {
+    type: DataTypes.INTEGER
+  },
+  status: {
+    type: DataTypes.STRING
+  },
+  type: {
+    type: DataTypes.STRING
+  },
+  executionTime: {
+    type: DataTypes.INTEGER
+  },
+  hitCount: {
+    type: DataTypes.INTEGER
   }
 }, { sequelize, tableName: "codePlace", name: { plural: "codePlaces", singular: "codePlace" } });
 
@@ -67629,10 +67656,7 @@ Measurement.init({
   trackerId: {
     type: DataTypes.INTEGER
   },
-  seconds: {
-    type: DataTypes.INTEGER
-  },
-  nanoseconds: {
+  executionTime: {
     type: DataTypes.INTEGER
   }
 }, {
@@ -67738,9 +67762,10 @@ var S32 = new AWS.S3({
 });
 
 // src/services/storage.service.ts
-async function getFile(commit, path) {
-  const [result] = await sequelize.query(`SELECT "content" FROM "files" WHERE "commit" = ${commit} AND "path" = ${path}`);
-  return result[0].content;
+async function getFile(releaseId, path) {
+  var _a;
+  const [result] = await sequelize.query(`SELECT "content" FROM "files" WHERE "releaseId" = ${releaseId} AND "path" = '${path}'`, { logging: true });
+  return (_a = result[0]) == null ? void 0 : _a.content;
 }
 
 // node_modules/diff/lib/index.mjs
@@ -68072,33 +68097,39 @@ var upload = async (event) => {
   var _a;
   const token = event.headers["token"];
   const newFiles = event.body.files;
-  console.log("1", event.body);
   const previousRelease = await Release.findOne({
+    where: {
+      status: "active"
+    },
     include: [Release.codePlaces],
     order: [["createdAt", "DESC"]]
   });
-  console.log("2", previousRelease);
-  const newRelease = Release.build({ commit: event.body.commit, status: "created" });
+  const newRelease = await Release.create({ commit: event.body.commit, status: "created" });
   if (previousRelease) {
     for (const codePlace of previousRelease.codePlaces) {
       const currentFileContent = (_a = newFiles.find((file) => file.path === codePlace.fileName)) == null ? void 0 : _a.content;
       if (!currentFileContent) {
         continue;
       }
-      const previousFileContent = await getFile(previousRelease.commit, codePlace.fileName);
+      const previousFileContent = await getFile(previousRelease.id, codePlace.fileName);
       if (!previousFileContent) {
         continue;
       }
       const offset = getOffsetIfCodeSame(codePlace.startLine, codePlace.endLine, previousFileContent, currentFileContent);
+      console.log("offset", offset);
       if (offset !== void 0) {
-        newRelease.codePlaces.push(CodePlace.build(__spreadProps(__spreadValues({}, codePlace), {
+        console.log("currentCodePlace", codePlace.toJSON());
+        const createdCodePlace = await CodePlace.create(__spreadProps(__spreadValues({}, codePlace.toJSON()), {
           startLine: codePlace.startLine + offset,
-          endLine: codePlace.endLine + offset
-        })));
+          endLine: codePlace.endLine + offset,
+          releaseId: newRelease.id,
+          id: void 0
+        }));
+        await sequelize.query(`INSERT INTO "files" (content, "codePlaceId", "releaseId") VALUES ('${currentFileContent}', ${createdCodePlace.id}, ${newRelease.id})`);
       }
     }
   }
-  newRelease.status = "processed";
+  newRelease.status = "active";
   await newRelease.save();
   return {
     statusCode: 200,

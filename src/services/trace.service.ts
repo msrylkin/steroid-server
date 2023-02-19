@@ -1,5 +1,7 @@
+import { trace } from 'console';
 import { Op } from 'sequelize';
 import { Environment, Measurement } from 'src/models';
+import { CodePlace } from 'src/models/CodePlace';
 import { Trace } from '../models';
 import { findStatementEnding } from './sources.service';
 
@@ -18,6 +20,14 @@ interface TraceLike {
     lineNumber: number;
 }
 
+interface QueriesMeasurements {
+    fileName: string;
+    columnNumber: number;
+    lineNumber: number;
+    measurements: MeasurementParam[];
+    callers: TraceLike[];
+}
+
 // enum Colours {
 //     red = '#FF0000',
 //     green = '#00FF00',
@@ -29,7 +39,50 @@ enum Colours {
     orange = 'rgba(255, 165, 0, 0.5)'
 }
 
-export async function saveTraces(env: Environment, traces: TraceParam[]) {
+export async function saveTraces(releaseId: number, queries: QueriesMeasurements[]) {
+    const existingCodePlaces = await CodePlace.findAll({
+        where: {
+            releaseId,
+        },
+    });
+
+    for (const query of queries) {
+        let codePlace = existingCodePlaces.find(codePlace => isEqualCodePlace(query, codePlace));
+
+        if (!codePlace) {
+            codePlace = await CodePlace.create({
+                releaseId,
+                fileName: query.fileName,
+                startColumn: query.columnNumber,
+                startLine: query.lineNumber,
+                type: 'query',
+            });
+        }
+
+        codePlace.executionTime = recalculateWeightedAverage({
+            previousAverage: codePlace.executionTime,
+            previousCount: codePlace.hitCount,
+            newNumbers: query.measurements.map(e => e[0]),
+        });
+        codePlace.hitCount = codePlace.hitCount + query.measurements.length;
+
+        for (const caller of query.callers) {
+            let callerCodePlace = existingCodePlaces.find(codePlace => isEqualCodePlace(caller, codePlace));
+
+            if (!callerCodePlace) {
+                callerCodePlace = await CodePlace.create({
+                    releaseId,
+                    fileName: query.fileName,
+                    startColumn: query.columnNumber,
+                    startLine: query.lineNumber,
+                    type: 'caller',
+                });
+            }
+        }
+    }
+}
+
+export async function saveTraces2(env: Environment, traces: TraceParam[]) {
     const existingTraces = await Trace.findAll({
         where: {
             commit: env.commit,
@@ -141,6 +194,10 @@ function isSameTrace(trace1: TraceLike, trace2: TraceLike) {
     return trace1.fileName === trace2.fileName && trace1.columnNumber === trace2.columnNumber && trace1.lineNumber === trace2.lineNumber;
 }
 
+function isEqualCodePlace(query: TraceLike, codePlace: CodePlace) {
+    return query.fileName === codePlace.fileName && query.columnNumber === codePlace.startColumn && query.lineNumber === codePlace.startLine;
+}
+
 function mapToMeasurement(measurementData: MeasurementParam) {
     return {
         seconds: measurementData[0],
@@ -168,4 +225,21 @@ function calculateState(measurements: Measurement[]) {
         avg,
         colour: getColour(avg),
     };
+}
+
+interface WieightedAverageParams {
+    previousAverage: number;
+    previousCount: number;
+    newNumbers: number[];
+}
+
+function recalculateWeightedAverage(param: WieightedAverageParams) {
+    if (!param.newNumbers.length) {
+        return param.previousAverage;
+    }
+    const newTotalCount = param.previousCount + param.newNumbers.length;
+    const previousAverageWeight = param.previousCount / newTotalCount;
+    const newAverageWeight = (1 - previousAverageWeight) / param.newNumbers.length;
+    const weighededNewNumbers = param.newNumbers.map(num => num * newAverageWeight);
+    return (param.previousAverage * previousAverageWeight + weighededNewNumbers.reduce((acc, num) => acc + num, 0)) / newTotalCount;
 }
