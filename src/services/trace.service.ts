@@ -2,10 +2,11 @@ import { trace } from 'console';
 import { Op } from 'sequelize';
 import { Environment, Measurement } from 'src/models';
 import { CodePlace } from 'src/models/CodePlace';
+import { Tracker } from 'src/models/Tracker';
 import { Trace } from '../models';
 import { findStatementEnding } from './sources.service';
 
-type MeasurementParam  =  [number, number];
+type MeasurementParam = [number, number];
 
 interface TraceParam {
     fileName: string;
@@ -46,16 +47,33 @@ export async function saveTraces(releaseId: number, queries: QueriesMeasurements
         },
     });
 
+    const queriesToSave = [];
+    const callersToSave = [];
+
     for (const query of queries) {
         let codePlace = existingCodePlaces.find(codePlace => isEqualCodePlace(query, codePlace));
 
         if (!codePlace) {
+            const tracker = await Tracker.create({
+                name: 'sample query tracker',
+            });
+            const searchResult = await findStatementEnding({
+                fileName: query.fileName,
+                columnNumber: query.columnNumber,
+                lineNumber: query.lineNumber,
+                commit: '1',
+                env: new Environment(),
+            });
             codePlace = await CodePlace.create({
                 releaseId,
                 fileName: query.fileName,
                 startColumn: query.columnNumber,
                 startLine: query.lineNumber,
+                endColumn: searchResult.endColumn,
+                endLine: searchResult.endLine,
                 type: 'query',
+                trackerId: tracker.id,
+                status: 'active',
             });
         }
 
@@ -70,12 +88,26 @@ export async function saveTraces(releaseId: number, queries: QueriesMeasurements
             let callerCodePlace = existingCodePlaces.find(codePlace => isEqualCodePlace(caller, codePlace));
 
             if (!callerCodePlace) {
+                const tracker = await Tracker.create({
+                    name: 'sample caller tracker',
+                });
+                const searchResult = await findStatementEnding({
+                    fileName: caller.fileName,
+                    columnNumber: caller.columnNumber,
+                    lineNumber: caller.lineNumber,
+                    commit: '1',
+                    env: new Environment(),
+                });
                 callerCodePlace = await CodePlace.create({
                     releaseId,
-                    fileName: query.fileName,
-                    startColumn: query.columnNumber,
-                    startLine: query.lineNumber,
+                    fileName: caller.fileName,
+                    startColumn: caller.columnNumber,
+                    startLine: caller.lineNumber,
+                    endColumn: searchResult.endColumn,
+                    endLine: searchResult.endLine,
                     type: 'caller',
+                    trackerId: tracker.id,
+                    status: 'active',
                 });
             }
         }

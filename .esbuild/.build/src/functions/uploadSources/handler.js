@@ -67639,7 +67639,7 @@ Tracker.init({
   name: {
     type: DataTypes.STRING
   }
-}, { sequelize, timestamps: true, tableName: "trackers", name: { singular: "tracker", plural: "traces" } });
+}, { sequelize, timestamps: true, tableName: "trackers", name: { singular: "tracker", plural: "trackers" } });
 
 // src/models/Measurement.ts
 var Measurement = class extends Model {

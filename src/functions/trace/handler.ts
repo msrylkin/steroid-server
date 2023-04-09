@@ -63,11 +63,16 @@ const trace: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) =
         });
     }
 
-    await saveTraces(release.id, event.body.queries);
-    return formatJSONResponse({
-        message: `Hello ${JSON.stringify(event.body)}, welcome to the exciting Serverless world!`,
-        event,
-    });
+    try {
+        await saveTraces(release.id, event.body.queries);
+        return formatJSONResponse({
+            message: `Hello ${JSON.stringify(event.body)}, welcome to the exciting Serverless world!`,
+            event,
+        }); 
+    } catch (err) {
+        console.log(err)
+        throw err;
+    }
 }
   
 export const main = middyfy(trace);

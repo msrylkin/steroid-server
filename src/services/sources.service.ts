@@ -73,7 +73,11 @@ export async function findStatementEnding({ commit, env, fileName, lineNumber, c
         return;
     }
     // console.log('here123')
-    const ast = parse((fileName.includes('services') ? code2 : code) || file.toString('utf-8'), {
+    // const ast = parse((fileName.includes('services') ? code2 : code) || file.toString('utf-8'), {
+    //     loc: true,
+    //     range: true,
+    // });
+    const ast = parse(file.toString('utf-8'), {
         loc: true,
         range: true,
     });
@@ -88,7 +92,7 @@ export async function findStatementEnding({ commit, env, fileName, lineNumber, c
             // }
 
             if (node.loc.start.line === lineNumber) {
-                console.log('noex', node)
+                // console.log('noex', node)
             }
 
             if (
@@ -96,11 +100,12 @@ export async function findStatementEnding({ commit, env, fileName, lineNumber, c
                 && node.loc.start.column === columnNumber - 1
                 && node.type === AST_NODE_TYPES.ExpressionStatement
             ) {
-                console.log('here333')
+                // console.log('here333')
                 const typedNode = node as TSESTree.ExpressionStatement;
                 // console.log('node', typedNode.expression)
+                console.log('foundNode', typedNode, 'startLine startColumn', lineNumber, columnNumber);
                 endLine = typedNode.loc.end.line;
-                endColumn = typedNode.loc.end.column;
+                endColumn = typedNode.loc.end.column + 1;
             }
 
             if (
