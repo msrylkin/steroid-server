@@ -47,8 +47,8 @@ export async function saveTraces(releaseId: number, queries: QueriesMeasurements
         },
     });
 
-    const queriesToSave = [];
-    const callersToSave = [];
+    const trackersToSave: Tracker[] = [];
+    const callersToSave: CodePlace[] = [];
 
     for (const query of queries) {
         let codePlace = existingCodePlaces.find(codePlace => isEqualCodePlace(query, codePlace));
@@ -85,7 +85,7 @@ export async function saveTraces(releaseId: number, queries: QueriesMeasurements
         codePlace.hitCount = codePlace.hitCount + query.measurements.length;
 
         for (const caller of query.callers) {
-            let callerCodePlace = existingCodePlaces.find(codePlace => isEqualCodePlace(caller, codePlace));
+            let callerCodePlace = existingCodePlaces.find(codePlace => isEqualCodePlace(caller, codePlace)) || callersToSave.find(codePlace => isEqualCodePlace(caller, codePlace));
 
             if (!callerCodePlace) {
                 const tracker = await Tracker.create({
@@ -98,7 +98,7 @@ export async function saveTraces(releaseId: number, queries: QueriesMeasurements
                     commit: '1',
                     env: new Environment(),
                 });
-                callerCodePlace = await CodePlace.create({
+                callerCodePlace = await CodePlace.build({
                     releaseId,
                     fileName: caller.fileName,
                     startColumn: caller.columnNumber,
@@ -109,9 +109,14 @@ export async function saveTraces(releaseId: number, queries: QueriesMeasurements
                     trackerId: tracker.id,
                     status: 'active',
                 });
+                callersToSave.push(callerCodePlace);
             }
         }
+
+        // await codePlace.save();
     }
+
+    await CodePlace.bulkCreate(callersToSave.map(e => e.toJSON()));
 }
 
 export async function saveTraces2(env: Environment, traces: TraceParam[]) {
@@ -274,4 +279,16 @@ function recalculateWeightedAverage(param: WieightedAverageParams) {
     const newAverageWeight = (1 - previousAverageWeight) / param.newNumbers.length;
     const weighededNewNumbers = param.newNumbers.map(num => num * newAverageWeight);
     return (param.previousAverage * previousAverageWeight + weighededNewNumbers.reduce((acc, num) => acc + num, 0)) / newTotalCount;
+}
+
+function normalizeUniqueQueries(queries: QueriesMeasurements[]) {
+    const result: QueriesMeasurements[] = [];
+
+    for (const query of queries) {
+        const addedQuery = result.find(query => result.find(added => isSameTrace(query, added)));
+
+        if (addedQuery) {
+            addedQuery.measurements[0] = recalculateWeightedAverage({});
+        }
+    }
 }

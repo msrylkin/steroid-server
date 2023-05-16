@@ -25,8 +25,8 @@ const upload: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) 
         Expires: 60 * 5,
         ContentType: 'application/zip',
         Metadata: {
-            'test1': 'testasdzxc'
-        }
+            'test1': 'testasdzxc',
+        },
         // 'x-amz-meta-test': 'testzxc'
     });
 

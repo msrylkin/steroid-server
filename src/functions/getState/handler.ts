@@ -34,6 +34,7 @@ const getState : ValidatedEventAPIGatewayProxyEvent<any> = async (event) => {
     const latestRelease = await findLatestRelease(commits);
 
     if (!latestRelease) {
+        console.log('not found release')
         return {
             statusCode: 200,
             body: null,

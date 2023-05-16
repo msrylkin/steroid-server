@@ -6,6 +6,7 @@ export class Release extends Model {
     id!: number;
     commit: string;
     status: string;
+    uploadId: string;
 
     createdAt: Date;
     updatedAt: Date;
@@ -29,6 +30,9 @@ Release.init({
         type: DataTypes.STRING,
     },
     status: {
+        type: DataTypes.STRING,
+    },
+    uploadId: {
         type: DataTypes.STRING,
     },
 }, { sequelize, tableName: 'releases' });

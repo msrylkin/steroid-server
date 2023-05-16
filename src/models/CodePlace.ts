@@ -67,4 +67,7 @@ CodePlace.init({
     hitCount: {
         type: DataTypes.INTEGER,
     },
+    releaseId: {
+        type: DataTypes.INTEGER,
+    },
 }, { sequelize, tableName: 'codePlace', name: { plural: 'codePlaces', singular: 'codePlace' } });
