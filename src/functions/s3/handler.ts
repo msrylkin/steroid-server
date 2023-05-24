@@ -110,12 +110,12 @@ function getOffset(trackingOriginalStartlLine: number, trackingOriginalEndLine: 
 	let modifiedIndex = 0;
 
 	for (const diff of diffs) {
-		console.log('diff', diff.value)
-		console.log('trackingOriginalStartlLine', trackingOriginalStartlLine)
-		console.log('trackingOriginalEndLine', trackingOriginalEndLine)
-		console.log('originalIndex', originalIndex)
-		console.log('modifiedIndex', modifiedIndex)
-		console.log('===============')
+		// console.log('diff', diff.value)
+		// console.log('trackingOriginalStartlLine', trackingOriginalStartlLine)
+		// console.log('trackingOriginalEndLine', trackingOriginalEndLine)
+		// console.log('originalIndex', originalIndex)
+		// console.log('modifiedIndex', modifiedIndex)
+		// console.log('===============')
 
 		if (
 			trackingOriginalStartlLine >= originalIndex
@@ -125,7 +125,6 @@ function getOffset(trackingOriginalStartlLine: number, trackingOriginalEndLine: 
 			if (diff.removed) {
 				return undefined;
 			} else {
-				const localOffset = trackingOriginalStartlLine - originalIndex;
 				return modifiedIndex - originalIndex;
 			}
 		}
@@ -140,8 +139,8 @@ function getOffset(trackingOriginalStartlLine: number, trackingOriginalEndLine: 
 		}
 	}
 
-	console.log('originalIndex', originalIndex);
-	console.log('modifiedIndex', modifiedIndex);
+	// console.log('originalIndex', originalIndex);
+	// console.log('modifiedIndex', modifiedIndex);
 }
 
 async function unzipArchive(data: Buffer) {

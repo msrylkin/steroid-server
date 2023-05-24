@@ -8,13 +8,6 @@ import { findStatementEnding } from './sources.service';
 
 type MeasurementParam = [number, number];
 
-interface TraceParam {
-    fileName: string;
-    columnNumber: number;
-    lineNumber: number;
-    measurements: MeasurementParam[];
-}
-
 interface TraceLike {
     fileName: string;
     columnNumber: number;
@@ -117,43 +110,6 @@ export async function saveTraces(releaseId: number, queries: QueriesMeasurements
     }
 
     await CodePlace.bulkCreate(callersToSave.map(e => e.toJSON()));
-}
-
-export async function saveTraces2(env: Environment, traces: TraceParam[]) {
-    const existingTraces = await Trace.findAll({
-        where: {
-            commit: env.commit,
-            environmentId: env.id,
-            [Op.or]: traces.map(({ fileName, columnNumber, lineNumber }) => ({
-                fileName,
-                columnNumber,
-                lineNumber,
-            })),
-        },
-    });
-    // const newTraces = traces.filter(({ fileName, columnNumber, lineNumber }) => !existingTraces.some(existingTrace => {
-    //     return existingTrace.fileName === fileName && existingTrace.columnNumber === columnNumber && existingTrace.lineNumber === lineNumber;
-    // }));
-    const newTraces = traces.filter(traceData => !existingTraces.some(existingTrace => isSameTrace(traceData, existingTrace)));
-
-    for (const existingTrace of existingTraces) {
-        const { measurements } = traces.find(traceData => isSameTrace(traceData, existingTrace));
-        await Measurement.bulkCreate(measurements.map(measurement => ({
-            ...mapToMeasurement(measurement),
-            traceId: existingTrace.id,
-        })));
-    }
-
-    await Trace.bulkCreate(newTraces.map(trace => ({
-        environmentId: env.id,
-        commit: env.commit,
-        fileName: trace.fileName,
-        columnNumber: trace.columnNumber,
-        lineNumber: trace.lineNumber,
-        measurements: trace.measurements.map(measure => mapToMeasurement(measure)),
-    })), {
-        include: [Measurement],
-    });
 }
 
 export async function getTraceState(commit: string) {
@@ -279,16 +235,4 @@ function recalculateWeightedAverage(param: WieightedAverageParams) {
     const newAverageWeight = (1 - previousAverageWeight) / param.newNumbers.length;
     const weighededNewNumbers = param.newNumbers.map(num => num * newAverageWeight);
     return (param.previousAverage * previousAverageWeight + weighededNewNumbers.reduce((acc, num) => acc + num, 0)) / newTotalCount;
-}
-
-function normalizeUniqueQueries(queries: QueriesMeasurements[]) {
-    const result: QueriesMeasurements[] = [];
-
-    for (const query of queries) {
-        const addedQuery = result.find(query => result.find(added => isSameTrace(query, added)));
-
-        if (addedQuery) {
-            addedQuery.measurements[0] = recalculateWeightedAverage({});
-        }
-    }
 }

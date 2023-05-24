@@ -14,7 +14,6 @@ const createUploadLink: ValidatedEventAPIGatewayProxyEvent<typeof schema> = asyn
             commit: event.body.commit,
             'upload-id': String(randomID),
         },
-        // 'x-amz-meta-test': 'testzxc'
     });
 
     return {
