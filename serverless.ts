@@ -1,9 +1,7 @@
 import type { AWS } from '@serverless/typescript';
 
-import hello from '@functions/hello';
 import trace from '@functions/trace';
 import getState  from '@functions/getState';
-import uploadSources  from '@functions/uploadSources';
 import s3Handler from '@functions/s3';
 import createUploadLink from '@functions/createUploadLink';
 
@@ -25,7 +23,7 @@ const serverlessConfiguration: AWS = {
     lambdaHashingVersion: '20201221',
   },
   // import the function via paths
-  functions: { hello, trace, getState, uploadSources, s3Handler, createUploadLink },
+  functions: { trace, getState, s3Handler, createUploadLink },
   package: { individually: true },
   custom: {
     esbuild: {
