@@ -4,6 +4,7 @@ import trace from '@functions/trace';
 import getState  from '@functions/getState';
 import s3Handler from '@functions/s3';
 import createUploadLink from '@functions/createUploadLink';
+import test from '@functions/test';
 
 const serverlessConfiguration: AWS = {
   service: 'steroid-backend',
@@ -23,7 +24,7 @@ const serverlessConfiguration: AWS = {
     lambdaHashingVersion: '20201221',
   },
   // import the function via paths
-  functions: { trace, getState, s3Handler, createUploadLink },
+  functions: { trace, getState, s3Handler, createUploadLink, test },
   package: { individually: true },
   custom: {
     esbuild: {

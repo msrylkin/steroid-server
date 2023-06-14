@@ -1,7 +1,7 @@
 import { Client } from "./Client";
 import { Environment } from "./Environment";
 import { Measurement } from "./Measurement";
-import { Trace } from "./Trace";
+// import { Trace } from "./Trace";
 import { CodePlace } from './CodePlace';
 import { Release } from './Release';
 import { Tracker } from './Tracker';
@@ -22,5 +22,5 @@ export {
     Client,
     Environment,
     Measurement,
-    Trace
+    // Trace
 }

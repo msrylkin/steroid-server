@@ -3,7 +3,7 @@ import { Op } from 'sequelize';
 import { Environment, Measurement } from 'src/models';
 import { CodePlace } from 'src/models/CodePlace';
 import { Tracker } from 'src/models/Tracker';
-import { Trace } from '../models';
+// import { Trace } from '../models';
 import { findStatementEnding } from './sources.service';
 
 type MeasurementParam = [number, number];
@@ -112,74 +112,74 @@ export async function saveTraces(releaseId: number, queries: QueriesMeasurements
     await CodePlace.bulkCreate(callersToSave.map(e => e.toJSON()));
 }
 
-export async function getTraceState(commit: string) {
-    const envWithTraces = await Environment.findOne({
-        where: {
-            commit
-        },
-        include: [{
-            association: Environment.traces,
-            include: [{
-                association: Trace.measurements,
-                required: true,
-            }],
-        }],
-    });
+// export async function getTraceState(commit: string) {
+//     const envWithTraces = await Environment.findOne({
+//         where: {
+//             commit
+//         },
+//         include: [{
+//             association: Environment.traces,
+//             include: [{
+//                 association: Trace.measurements,
+//                 required: true,
+//             }],
+//         }],
+//     });
 
-    if (!envWithTraces) {
-        return {
-            name: '',
-            commit,
-            traces: [],
-        };
-    }
+//     if (!envWithTraces) {
+//         return {
+//             name: '',
+//             commit,
+//             traces: [],
+//         };
+//     }
 
-    const tracesWithEndings = [];
+//     const tracesWithEndings = [];
 
-    for (const trace of envWithTraces.traces) {
-        // if (trace.lineNumber !== 6 || trace.columnNumber !== 5) {
-        //     // console.log('trace', trace)
-        //     // continue;
-        // }
-        if (trace.id !== 75) {
-            // continue;
-        }
-        const searchResult = await findStatementEnding({
-            commit,
-            env: envWithTraces,
-            fileName: trace.fileName,
-            lineNumber: trace.lineNumber,
-            columnNumber: trace.columnNumber,
-        });
+//     for (const trace of envWithTraces.traces) {
+//         // if (trace.lineNumber !== 6 || trace.columnNumber !== 5) {
+//         //     // console.log('trace', trace)
+//         //     // continue;
+//         // }
+//         if (trace.id !== 75) {
+//             // continue;
+//         }
+//         const searchResult = await findStatementEnding({
+//             commit,
+//             env: envWithTraces,
+//             fileName: trace.fileName,
+//             lineNumber: trace.lineNumber,
+//             columnNumber: trace.columnNumber,
+//         });
 
-        if (!searchResult) {
-            continue;
-        }
+//         if (!searchResult) {
+//             continue;
+//         }
 
-        tracesWithEndings.push({
-            fileName: trace.fileName,
-            startColumnNumber: trace.columnNumber,
-            startLineNumber: trace.lineNumber,
-            endColumnNumber: searchResult.endColumn,
-            endLineNumber: searchResult.endLine,
-            state: calculateState(trace.measurements)
-        });
-    }
+//         tracesWithEndings.push({
+//             fileName: trace.fileName,
+//             startColumnNumber: trace.columnNumber,
+//             startLineNumber: trace.lineNumber,
+//             endColumnNumber: searchResult.endColumn,
+//             endLineNumber: searchResult.endLine,
+//             state: calculateState(trace.measurements)
+//         });
+//     }
 
-    const result = {
-        name: envWithTraces.name,
-        commit: envWithTraces.commit,
-        // traces: envWithTraces.traces.map(trace => ({
-        //     fileName: trace.fileName,
-        //     columnNumber: trace.columnNumber,
-        //     lineNumber: trace.lineNumber,
-        //     state: calculateState(trace.measurements)
-        // })),
-        traces: tracesWithEndings,
-    };
+//     const result = {
+//         name: envWithTraces.name,
+//         commit: envWithTraces.commit,
+//         // traces: envWithTraces.traces.map(trace => ({
+//         //     fileName: trace.fileName,
+//         //     columnNumber: trace.columnNumber,
+//         //     lineNumber: trace.lineNumber,
+//         //     state: calculateState(trace.measurements)
+//         // })),
+//         traces: tracesWithEndings,
+//     };
     
-    return result;
-}
+//     return result;
+// }
 
 // private
 
