@@ -2,6 +2,7 @@ import { trace } from 'console';
 import { Op } from 'sequelize';
 import { Environment, Measurement } from 'src/models';
 import { CodePlace } from 'src/models/CodePlace';
+import { Path } from 'src/models/Path';
 import { Tracker } from 'src/models/Tracker';
 // import { Trace } from '../models';
 import { findStatementEnding } from './sources.service';
@@ -68,6 +69,11 @@ export async function saveTraces(releaseId: number, queries: QueriesMeasurements
                 trackerId: tracker.id,
                 status: 'active',
             });
+
+            await Path.create({
+                nodeId: codePlace.id,
+                path: `${codePlace.id}`,
+            })
         }
 
         codePlace.executionTime = recalculateWeightedAverage({

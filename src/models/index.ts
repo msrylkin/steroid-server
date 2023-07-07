@@ -5,6 +5,7 @@ import { Measurement } from "./Measurement";
 import { CodePlace } from './CodePlace';
 import { Release } from './Release';
 import { Tracker } from './Tracker';
+import { Path } from './Path';
 
 function initAssociations() {
     Client.associate();
@@ -13,6 +14,7 @@ function initAssociations() {
     CodePlace.associate();
     Release.associate();
     Tracker.associate();
+    // Path.associate();
     // Trace.associate();
 }
 
