@@ -1,5 +1,5 @@
 import { sequelize } from '@libs/sequelize';
-import { Model, DataTypes, Association } from 'sequelize';
+import { Model, DataTypes, Association } from "@sequelize/core";
 import { Environment } from './Environment';
 
 export class Client extends Model {

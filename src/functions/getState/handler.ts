@@ -1,7 +1,7 @@
 import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
 import { Release } from 'src/models/Release';
-import { Op } from 'sequelize';
+import { Op } from "@sequelize/core";
 import { CodePlace } from 'src/models/CodePlace';
 import { Tracker } from 'src/models/Tracker';
 

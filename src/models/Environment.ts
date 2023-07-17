@@ -1,6 +1,6 @@
 import { sequelize } from '@libs/sequelize';
-import { Association, Model } from 'sequelize';
-import { DataTypes } from 'sequelize';
+import { Association, Model } from "@sequelize/core";
+import { DataTypes } from "@sequelize/core";
 // import { Trace } from '.';
 import { Client } from './Client';
 

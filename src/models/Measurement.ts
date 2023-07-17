@@ -1,6 +1,6 @@
 import { sequelize } from '@libs/sequelize';
-import { DataTypes, Model, Association } from 'sequelize';
-import { Trace } from './Trace';
+import { DataTypes, Model, Association } from "@sequelize/core";
+// import { Trace } from './Trace';
 import { Tracker } from './Tracker';
 
 // export class Measurement extends Model {

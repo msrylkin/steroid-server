@@ -1,5 +1,5 @@
 import { trace } from 'console';
-import { Op } from 'sequelize';
+import { Op } from '@sequelize/core';
 import { Environment, Measurement } from 'src/models';
 import { CodePlace } from 'src/models/CodePlace';
 import { Path } from 'src/models/Path';
@@ -9,13 +9,13 @@ import { findStatementEnding } from './sources.service';
 
 type MeasurementParam = [number, number];
 
-interface TraceLike {
+export interface TraceLike {
     fileName: string;
     columnNumber: number;
     lineNumber: number;
 }
 
-interface QueriesMeasurements {
+export interface QueriesMeasurements {
     fileName: string;
     columnNumber: number;
     lineNumber: number;
@@ -35,16 +35,16 @@ enum Colours {
 }
 
 export async function saveTraces(releaseId: number, queries: QueriesMeasurements[]) {
-    const existingCodePlaces = await CodePlace.findAll({
-        where: {
-            releaseId,
-        },
-    });
-
     const trackersToSave: Tracker[] = [];
-    const callersToSave: CodePlace[] = [];
 
     for (const query of queries) {
+        const callersToSave: CodePlace[] = [];
+        let existingCodePlaces = await CodePlace.findAll({
+            where: {
+                releaseId,
+            },
+        });
+
         let codePlace = existingCodePlaces.find(codePlace => isEqualCodePlace(query, codePlace));
 
         if (!codePlace) {
@@ -83,7 +83,14 @@ export async function saveTraces(releaseId: number, queries: QueriesMeasurements
         });
         codePlace.hitCount = codePlace.hitCount + query.measurements.length;
 
+        const callersIdsPath: number[] = [];
+
         for (const caller of query.callers) {
+            existingCodePlaces = await CodePlace.findAll({
+                where: {
+                    releaseId,
+                },
+            });
             let callerCodePlace = existingCodePlaces.find(codePlace => isEqualCodePlace(caller, codePlace)) || callersToSave.find(codePlace => isEqualCodePlace(caller, codePlace));
 
             if (!callerCodePlace) {
@@ -97,7 +104,7 @@ export async function saveTraces(releaseId: number, queries: QueriesMeasurements
                     commit: '1',
                     env: new Environment(),
                 });
-                callerCodePlace = await CodePlace.build({
+                callerCodePlace = await CodePlace.create({
                     releaseId,
                     fileName: caller.fileName,
                     startColumn: caller.columnNumber,
@@ -110,12 +117,46 @@ export async function saveTraces(releaseId: number, queries: QueriesMeasurements
                 });
                 callersToSave.push(callerCodePlace);
             }
+
+            callersIdsPath.push(callerCodePlace.id);
+        }
+
+        // for (const callerToSave of callersToSave) {
+        //     const savedCaller = await CodePlace.create(callerToSave.toJSON());
+        //     callersIdsPath.push(savedCaller.id);
+        //     await Path.create({
+        //         nodeId: savedCaller.id,
+        //         path: buildFullPath(codePlace.id, callersIdsPath),
+        //     });
+        // }
+
+        for (let i = 0; i < callersIdsPath.length; i++) {
+            const currentIdsPath = callersIdsPath.slice(0, i + 1);
+            const callerId = callersIdsPath[i];
+
+            const existingPath = await Path.findOne({
+                where: {
+                    nodeId: callerId,
+                    path: buildFullPath(codePlace.id, currentIdsPath),
+                }
+            });
+
+            if (!existingPath) {
+                await Path.create({
+                    nodeId: callerId,
+                    path: buildFullPath(codePlace.id, currentIdsPath),
+                });
+            }
         }
 
         // await codePlace.save();
     }
 
-    await CodePlace.bulkCreate(callersToSave.map(e => e.toJSON()));
+    // for (const callerToSave of callersToSave) {
+    //     const savedCaller = await CodePlace.create(callerToSave.toJSON());
+    // }
+
+    // await CodePlace.bulkCreate(callersToSave.map(e => e.toJSON()));
 }
 
 // export async function getTraceState(commit: string) {
@@ -216,15 +257,15 @@ function getColour(avgTimeMs: number) {
     return Colours.red;
 }
 
-function calculateState(measurements: Measurement[]) {
-    const sum = measurements.reduce((acc, { seconds, nanoseconds }) => acc + seconds * 1000 + nanoseconds / 1000000, 0); // ms
-    const avg = sum / measurements.length;
+// function calculateState(measurements: Measurement[]) {
+//     const sum = measurements.reduce((acc, { seconds, nanoseconds }) => acc + seconds * 1000 + nanoseconds / 1000000, 0); // ms
+//     const avg = sum / measurements.length;
 
-    return {
-        avg,
-        colour: getColour(avg),
-    };
-}
+//     return {
+//         avg,
+//         colour: getColour(avg),
+//     };
+// }
 
 interface WieightedAverageParams {
     previousAverage: number;
@@ -241,4 +282,9 @@ function recalculateWeightedAverage(param: WieightedAverageParams) {
     const newAverageWeight = (1 - previousAverageWeight) / param.newNumbers.length;
     const weighededNewNumbers = param.newNumbers.map(num => num * newAverageWeight);
     return (param.previousAverage * previousAverageWeight + weighededNewNumbers.reduce((acc, num) => acc + num, 0)) / newTotalCount;
+}
+
+function buildFullPath(queryId: number, callerIds: number[]) {
+    console.log('callerIds', callerIds)
+    return `${queryId}.${callerIds.join('.')}`;
 }

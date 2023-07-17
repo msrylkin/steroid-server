@@ -6,7 +6,7 @@ import { promisify } from 'util';
 import { Release } from "src/models/Release";
 import { CodePlace } from "src/models/CodePlace";
 import * as diff from 'diff';
-import { Op } from "sequelize";
+import { Op } from "@sequelize/core";
 
 const zipFromBuffer = promisify(yauzl.fromBuffer.bind(yauzl)); // TODO: use https://www.npmjs.com/package/unzipper
 
