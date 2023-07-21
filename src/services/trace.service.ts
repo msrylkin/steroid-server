@@ -149,7 +149,7 @@ export async function saveTraces(releaseId: number, queries: QueriesMeasurements
             }
         }
 
-        // await codePlace.save();
+        await codePlace.save();
     }
 
     // for (const callerToSave of callersToSave) {

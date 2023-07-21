@@ -63,15 +63,15 @@ describe(__filename, () => {
 
     const traces: QueriesMeasurements[] = [{
         ...query1,
-        measurements: [[0,0]],
+        measurements: [[300,100]],
         callers: [callerA, callerB, callerC],
     }, {
         ...query2,
-        measurements: [[0,0]],
+        measurements: [[100,100]],
         callers: [callerA, callerB, callerD],
     }];
 
-    it('saves traces', async () => {
+    it('saves traces first time', async () => {
         const release = await seedRelease();
         jest.spyOn(sourcesService, 'findStatementEnding').mockResolvedValue({ endColumn: 1, endLine: 1 });
         await traceService.saveTraces(release.id, traces);
@@ -87,7 +87,6 @@ describe(__filename, () => {
         const callerBInstance = await getCodePlaceInstance(callerB);
         const callerCInstance = await getCodePlaceInstance(callerC);
         const callerDInstance = await getCodePlaceInstance(callerD);
-        console.log([`${query1Instance.id}`, `${query2Instance.id}`])
 
         const expectedPath = buildTestPath([
             [query1Instance],
@@ -101,7 +100,156 @@ describe(__filename, () => {
         ]);
 
         expect(mappedPaths).toEqual(expectedPath);
+    });
 
+    it('saves traces second time', async () => {
+        const release = await seedRelease();
+        jest.spyOn(sourcesService, 'findStatementEnding').mockResolvedValue({ endColumn: 1, endLine: 1 });
+
+        const query1Instance = await seedCodePlace({
+            fileName: query1.fileName,
+            startLine: query1.lineNumber,
+            startColumn: query1.columnNumber,
+            endColumn: 1,
+            endLine: 1,
+            releaseId: release.id,
+        });
+        const callerAInstance = await seedCodePlace({
+            fileName: callerA.fileName,
+            startLine: callerA.lineNumber,
+            startColumn: callerA.columnNumber,
+            endColumn: 1,
+            endLine: 1,
+            releaseId: release.id,
+        });
+        const callerBInstance = await seedCodePlace({
+            fileName: callerB.fileName,
+            startLine: callerB.lineNumber,
+            startColumn: callerB.columnNumber,
+            endColumn: 1,
+            endLine: 1,
+            releaseId: release.id,
+        });
+        const callerCInstance = await seedCodePlace({
+            fileName: callerC.fileName,
+            startLine: callerC.lineNumber,
+            startColumn: callerC.columnNumber,
+            endColumn: 1,
+            endLine: 1,
+            releaseId: release.id,
+        });
+
+        await seedPath({
+            nodeId: query1Instance.id,
+            path: `${query1Instance.id}`,
+        });
+        await seedPath({
+            nodeId: callerAInstance.id,
+            path: `${query1Instance.id}.${callerAInstance.id}`,
+        });
+        await seedPath({
+            nodeId: callerBInstance.id,
+            path: `${query1Instance.id}.${callerAInstance.id}.${callerBInstance.id}`,
+        });
+        await seedPath({
+            nodeId: callerCInstance.id,
+            path: `${query1Instance.id}.${callerAInstance.id}.${callerBInstance.id}.${callerCInstance.id}`,
+        });
+
+        await traceService.saveTraces(release.id, [{
+            ...query1,
+            measurements: [[0,0]],
+            callers: [callerA, callerB, callerC],
+        }]);
+
+        const paths = await Path.findAll({ order: [['path', 'ASC']] });
+
+        const mappedPaths = paths.map(({ path }) => path);
+
+        const expectedPath = buildTestPath([
+            [query1Instance],
+            [query1Instance, callerAInstance],
+            [query1Instance, callerAInstance, callerBInstance],
+            [query1Instance, callerAInstance, callerBInstance, callerCInstance],
+        ]);
+
+        expect(mappedPaths).toEqual(expectedPath);
+    });
+
+    it('creates new path', async () => {
+        const release = await seedRelease();
+        jest.spyOn(sourcesService, 'findStatementEnding').mockResolvedValue({ endColumn: 1, endLine: 1 });
+
+        const query1Instance = await seedCodePlace({
+            fileName: query1.fileName,
+            startLine: query1.lineNumber,
+            startColumn: query1.columnNumber,
+            endColumn: 1,
+            endLine: 1,
+            releaseId: release.id,
+        });
+        const callerAInstance = await seedCodePlace({
+            fileName: callerA.fileName,
+            startLine: callerA.lineNumber,
+            startColumn: callerA.columnNumber,
+            endColumn: 1,
+            endLine: 1,
+            releaseId: release.id,
+        });
+        const callerBInstance = await seedCodePlace({
+            fileName: callerB.fileName,
+            startLine: callerB.lineNumber,
+            startColumn: callerB.columnNumber,
+            endColumn: 1,
+            endLine: 1,
+            releaseId: release.id,
+        });
+        const callerCInstance = await seedCodePlace({
+            fileName: callerC.fileName,
+            startLine: callerC.lineNumber,
+            startColumn: callerC.columnNumber,
+            endColumn: 1,
+            endLine: 1,
+            releaseId: release.id,
+        });
+
+        await seedPath({
+            nodeId: query1Instance.id,
+            path: `${query1Instance.id}`,
+        });
+        await seedPath({
+            nodeId: callerAInstance.id,
+            path: `${query1Instance.id}.${callerAInstance.id}`,
+        });
+        await seedPath({
+            nodeId: callerBInstance.id,
+            path: `${query1Instance.id}.${callerAInstance.id}.${callerBInstance.id}`,
+        });
+        await seedPath({
+            nodeId: callerCInstance.id,
+            path: `${query1Instance.id}.${callerAInstance.id}.${callerBInstance.id}.${callerCInstance.id}`,
+        });
+
+        await traceService.saveTraces(release.id, [{
+            ...query1,
+            measurements: [[0,0]],
+            callers: [callerB, callerC],
+        }]);
+
+        const paths = await Path.findAll({ order: [['path', 'ASC']] });
+
+        const mappedPaths = paths.map(({ path }) => path);
+
+        const expectedPath = buildTestPath([
+            [query1Instance],
+            [query1Instance, callerAInstance],
+            [query1Instance, callerAInstance, callerBInstance],
+            [query1Instance, callerAInstance, callerBInstance, callerCInstance],
+            [query1Instance, callerBInstance],
+            [query1Instance, callerBInstance, callerCInstance],
+        ]);
+
+        expect(mappedPaths).toEqual(expectedPath);
     });
 });
 
@@ -126,4 +274,35 @@ function getCodePlaceInstance(codePlaceData: TraceLike) {
 
 function buildTestPath(paths: CodePlace[][]) {
     return paths.map(path => path.map(cp => cp.id).join('.'));
+}
+
+async function seedCodePlace(overrides?: Partial<CodePlace>) {
+    return CodePlace.create({
+        type: 'caller',
+        status: 'active',
+        fileName: faker.system.directoryPath(),
+        startColumn: 1,
+        endColumn: 1,
+        startLine: 1,
+        endLine: 1,
+        releaseId: overrides?.releaseId || (await seedRelease()).id,
+        trackerId: overrides?.trackerId || (await seedTracker()).id,
+        ...overrides,
+    });
+}
+
+async function seedPath(overrides?: Partial<Path>) {
+    const nodeId = overrides?.nodeId || overrides?.path?.split('.')[0] || (await seedCodePlace()).id;
+    return Path.create({
+        nodeId,
+        path: `${nodeId}`,
+        ...overrides,
+    })
+}
+
+async function seedTracker(overrides?: Partial<Tracker>) {
+    return Tracker.create({
+        name: faker.commerce.department(),
+        ...overrides,
+    });
 }
