@@ -10,25 +10,9 @@ import { faker } from '@faker-js/faker';
 import * as traceService from "./trace.service";
 import * as storageService from "./storage.service";
 import * as sourcesService from "./sources.service";
+import { seedCodePlace, seedPath, seedRelease } from "src/tests/seeds";
 
 describe(__filename, () => {
-    beforeEach(async () => {
-        try {
-            await Path.truncate({ cascade: true });
-            await Measurement.truncate({ cascade: true });
-            await CodePlace.truncate({ cascade: true });
-            await Release.truncate({ cascade: true });
-            await Tracker.truncate({ cascade: true });
-        } catch (e) {
-            console.log(e)
-            throw e
-        }
-    });
-
-    afterEach(() => {
-        jest.resetAllMocks();
-    });
-
     const query1 = {
         fileName: 'serviceA',
         lineNumber: 1,
@@ -253,56 +237,10 @@ describe(__filename, () => {
     });
 });
 
-async function seedEnvironment(overrides?: Partial<Environment>) {
-    return Environment.create({
-        ...overrides,
-    });
-}
-
-async function seedRelease(overrides?: Partial<Release>) {
-    return Release.create({
-        commit: faker.string.alphanumeric({ length: 6 }),
-        status: 'active',
-        uploadId: faker.string.alphanumeric({ length: 10 }),
-        ...overrides,
-    });
-}
-
 function getCodePlaceInstance(codePlaceData: TraceLike) {
     return CodePlace.findOne({ where : { fileName: codePlaceData.fileName, startColumn: codePlaceData.columnNumber, startLine: codePlaceData.lineNumber }, rejectOnEmpty: true  })
 }
 
 function buildTestPath(paths: CodePlace[][]) {
     return paths.map(path => path.map(cp => cp.id).join('.'));
-}
-
-async function seedCodePlace(overrides?: Partial<CodePlace>) {
-    return CodePlace.create({
-        type: 'caller',
-        status: 'active',
-        fileName: faker.system.directoryPath(),
-        startColumn: 1,
-        endColumn: 1,
-        startLine: 1,
-        endLine: 1,
-        releaseId: overrides?.releaseId || (await seedRelease()).id,
-        trackerId: overrides?.trackerId || (await seedTracker()).id,
-        ...overrides,
-    });
-}
-
-async function seedPath(overrides?: Partial<Path>) {
-    const nodeId = overrides?.nodeId || overrides?.path?.split('.')[0] || (await seedCodePlace()).id;
-    return Path.create({
-        nodeId,
-        path: `${nodeId}`,
-        ...overrides,
-    })
-}
-
-async function seedTracker(overrides?: Partial<Tracker>) {
-    return Tracker.create({
-        name: faker.commerce.department(),
-        ...overrides,
-    });
 }

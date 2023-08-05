@@ -24,5 +24,6 @@ export {
     Client,
     Environment,
     Measurement,
+    Release,
     // Trace
 }

@@ -1,11 +1,20 @@
 import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
-import { Release } from 'src/models/Release';
-import { Op } from "@sequelize/core";
+import { Release } from 'src/models';
+import { Op } from "sequelize";
 import { CodePlace } from 'src/models/CodePlace';
 import { Tracker } from 'src/models/Tracker';
 
 function findLatestRelease(commits: string[]) {
+    console.log([{
+        association: Release.codePlaces,
+        include: [{
+            association: CodePlace.tracker,
+            include: [{
+                association: Tracker.measurements,
+            }],
+        }],
+    }])
     return Release.findOne({
         where: {
             commit: {

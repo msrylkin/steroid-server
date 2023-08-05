@@ -1,5 +1,5 @@
 import { sequelize } from '@libs/sequelize';
-import { DataTypes, Model, Association } from "@sequelize/core";
+import { DataTypes, Model, Association } from "sequelize";
 import { CodePlace } from './CodePlace';
 
 export class Release extends Model {

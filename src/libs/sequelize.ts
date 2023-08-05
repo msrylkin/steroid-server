@@ -1,4 +1,4 @@
-import { Sequelize } from "@sequelize/core";
+import { Sequelize } from "sequelize";
 
 export function getSequlize() {
     return new Sequelize({

@@ -1,8 +1,8 @@
-import { Association, Model } from "@sequelize/core";
+import { Association, Model } from "sequelize";
 import { Release } from "./Release";
 import { Tracker } from "./Tracker";
 import { sequelize } from '@libs/sequelize';
-import { DataTypes } from "@sequelize/core";
+import { DataTypes } from "sequelize";
 
 export class CodePlace extends Model {
     id: number;

@@ -6,7 +6,8 @@ import { promisify } from 'util';
 import { Release } from "src/models/Release";
 import { CodePlace } from "src/models/CodePlace";
 import * as diff from 'diff';
-import { Op } from "@sequelize/core";
+import { Op } from "sequelize";
+import { Path } from "src/models/Path";
 
 const zipFromBuffer = promisify(yauzl.fromBuffer.bind(yauzl)); // TODO: use https://www.npmjs.com/package/unzipper
 
@@ -92,6 +93,21 @@ async function handleS3Record(record: S3EventRecord) {
             }
         }
     }
+
+    // const createdCodePlaceQueries = await CodePlace.findAll({
+    //     where: {
+    //         releaseId: newRelease.id,
+    //         type: 'query',
+    //     },
+    // });
+
+    // for (const query of createdCodePlaceQueries) {
+    //     const previousCodePlace = await CodePlace.findOne({
+    //         where: {
+    //             ...cre
+    //         }
+    //     })
+    // }
 }
 
 function getOffsetIfCodeSame(
@@ -180,4 +196,4 @@ async function unzipArchive(data: Buffer) {
     return files;
 }
 
-export const main = middyfy(s3Handler);
+export const main = s3Handler;

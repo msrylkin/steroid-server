@@ -1,5 +1,5 @@
 import { trace } from 'console';
-import { Op } from '@sequelize/core';
+import { Op } from 'sequelize';
 import { Environment, Measurement } from 'src/models';
 import { CodePlace } from 'src/models/CodePlace';
 import { Path } from 'src/models/Path';
@@ -274,6 +274,7 @@ interface WieightedAverageParams {
 }
 
 function recalculateWeightedAverage(param: WieightedAverageParams) {
+    return 100;
     if (!param.newNumbers.length) {
         return param.previousAverage;
     }

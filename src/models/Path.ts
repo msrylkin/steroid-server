@@ -1,4 +1,4 @@
-import { Association, DataTypes, Model } from "@sequelize/core";
+import { Association, DataTypes, Model } from "sequelize";
 import { sequelize } from '@libs/sequelize';
 import { CodePlace } from "./CodePlace";
 

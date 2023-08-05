@@ -7,18 +7,17 @@ interface MiddifyParams {
 }
 
 export const middyfy = (handler, { schema }: MiddifyParams = {}) => {
-  const wrappedHandler = middy(handler)
-    .use(middyJsonBodyParser());
+  const wrappedHandler = middy(handler).use(middyJsonBodyParser());
 
   if (schema) {
-    wrappedHandler.use(validator({
-      inputSchema: {
-        type: 'object',
-        properties: {
-          body: schema
-        }
-      }
-    }));
+    // wrappedHandler.use(validator({
+    //   inputSchema: {
+    //     type: 'object',
+    //     properties: {
+    //       body: schema
+    //     }
+    //   }
+    // }));
   }
 
   return wrappedHandler;
