@@ -6,7 +6,7 @@ export default {
     {
         s3: {
             bucket: 'sources-archives',
-            event: 's3:*'
+            event: 's3:ObjectCreated:Put'
         }
     }
   ]
