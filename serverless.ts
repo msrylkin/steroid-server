@@ -52,7 +52,7 @@ const serverlessConfiguration: AWS = {
       ImagesS3Bucket: {
         Type: 'AWS::S3::Bucket',
         Properties: {
-          BucketName: 'local-bucket'
+          BucketName: 'sources-archives'
         }
       }
     }

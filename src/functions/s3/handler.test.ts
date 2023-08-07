@@ -50,11 +50,11 @@ describe('s3 handler', () => {
                 "s3SchemaVersion": "1.0",
                 "configurationId": "testConfigId",
                 "bucket": {
-                    "name": "local-bucket",
+                    "name": "sources-archives",
                     "ownerIdentity": {
                         "principalId": "8ECD361D0C3207"
                     },
-                    "arn": "arn:aws:s3: : :local-bucket"
+                    "arn": "arn:aws:s3: : :sources-archives"
                 },
                 "object": {
                     "key": "sources/commit:931158a58842c57042d19da81eb0d0718327eb53/4646506",

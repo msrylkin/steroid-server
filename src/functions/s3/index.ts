@@ -5,7 +5,7 @@ export default {
   events: [
     {
         s3: {
-            bucket: 'local-bucket',
+            bucket: 'sources-archives',
             event: 's3:*'
         }
     }

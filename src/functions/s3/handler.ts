@@ -54,7 +54,7 @@ async function handleS3Record(record: S3EventRecord) {
         Key: record.s3.object.key,
     }).promise();
     const { Body: previousReleaseBody } = await S3.getObject({
-        Bucket: 'local-bucket',
+        Bucket: 'sources-archives',
         Key: `sources/commit:${previousRelease.commit}/${previousRelease.uploadId}`,
     }).promise();
     
