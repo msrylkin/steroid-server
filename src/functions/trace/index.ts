@@ -2,7 +2,6 @@ import schema from './schema';
 import { handlerPath } from '@libs/handlerResolver';
 
 export default {
-  reservedConcurrency: 1,
   handler: `${handlerPath(__dirname)}/handler.main`,
   events: [
     {
