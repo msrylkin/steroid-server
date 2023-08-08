@@ -1,7 +1,9 @@
+import * as pg from 'pg';
 import { Sequelize } from "sequelize";
 
 export function getSequlize() {
     return new Sequelize({
+        dialectModule: pg,
         dialect: 'postgres',
         host: 'localhost',
         port: 6543,
