@@ -11,6 +11,7 @@ const serverlessConfiguration: AWS = {
   frameworkVersion: '3',
   plugins: ['serverless-esbuild', 'serverless-offline', 'serverless-s3-local'],
   provider: {
+    stage: "${opt:stage, 'dev'}",
     name: 'aws',
     runtime: 'nodejs18.x',
     apiGateway: {
@@ -20,6 +21,7 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
+      STAGE: '${self:provider.stage}',
     },
     lambdaHashingVersion: '20201221',
   },
