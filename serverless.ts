@@ -24,6 +24,10 @@ const serverlessConfiguration: AWS = {
       STAGE: '${self:provider.stage}',
     },
     lambdaHashingVersion: '20201221',
+    vpc: {
+      securityGroupIds: ['sg-0410d4a1935367c3e'],
+      subnetIds: ['subnet-09e06d899ccea58fb','subnet-0c22fcfb1a576b023', 'subnet-06318b657f8706731']
+    }
   },
   // import the function via paths
   functions: { trace, getState, s3Handler, createUploadLink, test },
