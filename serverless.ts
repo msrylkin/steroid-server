@@ -47,16 +47,6 @@ const serverlessConfiguration: AWS = {
       directory: '/tmp'
     }
   },
-  // resources: {
-  //   Resources: {
-  //     ImagesS3Bucket: {
-  //       Type: 'AWS::S3::Bucket',
-  //       Properties: {
-  //         BucketName: 'sources-archives'
-  //       }
-  //     }
-  //   }
-  // }
 };
 
 module.exports = serverlessConfiguration;
