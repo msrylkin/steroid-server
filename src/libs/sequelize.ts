@@ -11,13 +11,13 @@ export function getSequlize() {
         port: isAws ? 5432 : 6543,
         database: isAws ? 'steroid-db' : 'steroid2',
         username: isAws ? 'steroid' : 'user',
-        password: isAws ? 'YXcQwtCS98LX8!3' : 'password',
+        password: isAws ? '31iNdXxY' : 'password',
         pool: {
             idle: 1000,
             max: 100,
             acquire: 10000,
         },
-        ssl: !!isAws,
+        // ssl: !!isAws,
     });
 }
 
