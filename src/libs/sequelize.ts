@@ -17,7 +17,7 @@ export function getSequlize() {
             max: 100,
             acquire: 10000,
         },
-        // ssl: !!isAws,
+        ssl: !!isAws,
     });
 }
 
