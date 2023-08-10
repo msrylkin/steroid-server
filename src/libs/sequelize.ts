@@ -9,7 +9,7 @@ export function getSequlize() {
         dialect: 'postgres',
         host: isAws ? 'steroid-db.chnzjncs47wo.us-east-1.rds.amazonaws.com' : 'localhost',
         port: isAws ? 5432 : 6543,
-        database: isAws ? 'steroid-db' : 'steroid2',
+        database: isAws ? 'postgres' : 'steroid2',
         username: isAws ? 'postgres' : 'user',
         password: isAws ? '31iNdXxY' : 'password',
         pool: {
