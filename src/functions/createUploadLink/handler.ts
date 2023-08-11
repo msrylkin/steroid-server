@@ -4,6 +4,7 @@ import { S3 } from 'src/sdk/s3.sdk';
 import { middyfy } from '@libs/lambda';
 
 const createUploadLink: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
+    console.log('commit', event.body.commit);
     const randomID = parseInt(Math.random() * 10000000 + '');
     const signedUrl = await S3.getSignedUrlPromise('putObject', {
         Bucket: 'sources-archives',
