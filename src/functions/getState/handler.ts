@@ -6,15 +6,6 @@ import { CodePlace } from 'src/models/CodePlace';
 import { Tracker } from 'src/models/Tracker';
 
 function findLatestRelease(commits: string[]) {
-    console.log([{
-        association: Release.codePlaces,
-        include: [{
-            association: CodePlace.tracker,
-            include: [{
-                association: Tracker.measurements,
-            }],
-        }],
-    }])
     return Release.findOne({
         where: {
             commit: {
@@ -35,7 +26,7 @@ function findLatestRelease(commits: string[]) {
 }
 
 const getState : ValidatedEventAPIGatewayProxyEvent<any> = async (event) => {
-    const commits = event.multiValueQueryStringParameters.commits;
+    const commits = event?.multiValueQueryStringParameters?.commits || [];
 
     const latestRelease = await findLatestRelease(commits);
 
