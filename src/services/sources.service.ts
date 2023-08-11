@@ -1,7 +1,9 @@
-import { Environment } from "src/models";
+import { Environment, Release } from "src/models";
 import * as fs from 'fs';
 import * as path from 'path';
 import { parse, simpleTraverse, AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree';
+import { getObject } from "src/sdk/s3.sdk";
+import { unzipArchive } from "./archive.service";
 
 const sourcesRoootPath = '/Users/maxmax/steroid';
 const code = 
@@ -66,7 +68,8 @@ interface FindStatementParams {
 }
 
 export async function findStatementEnding({ commit, env, fileName, lineNumber, columnNumber }: FindStatementParams) {
-    const file = fs.readFileSync(path.join(sourcesRoootPath, fileName));
+    // const file = fs.readFileSync(path.join(sourcesRoootPath, fileName));
+    const file = await getFileFromCommit(fileName, commit);
 
     if (!file) {
         // console.log('no file')
@@ -77,7 +80,11 @@ export async function findStatementEnding({ commit, env, fileName, lineNumber, c
     //     loc: true,
     //     range: true,
     // });
-    const ast = parse(file.toString('utf-8'), {
+    // const ast = parse(file.toString('utf-8'), {
+    //     loc: true,
+    //     range: true,
+    // });
+    const ast = parse(file, {
         loc: true,
         range: true,
     });
@@ -139,4 +146,32 @@ export async function findStatementEnding({ commit, env, fileName, lineNumber, c
     //         console.log(elem);
     //     }
     // })
+}
+
+async function getFileFromCommit(fileName: string, commit: string) {
+    const release = await Release.findOne({
+        where: {
+            commit,
+        },
+    });
+
+    if (!release) {
+        console.log('no release for', fileName, commit)
+        return null;
+    }
+
+    const { Body } = await getObject({
+        Bucket: 'sources-archives',
+        Key: `sources/commit:${release.commit}/${release.uploadId}`,
+    });
+
+    if (!Body || !(Body instanceof Buffer)) {
+        console.log('no archive for', fileName, commit);
+        return null;
+    }
+
+    const files = await unzipArchive(Body);
+    const file = files.find(fileObj => fileObj.path === fileName);
+
+    return file.content;
 }
