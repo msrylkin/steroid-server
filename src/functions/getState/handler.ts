@@ -42,7 +42,7 @@ const getState : ValidatedEventAPIGatewayProxyEvent<any> = async (event) => {
     if (!latestRelease) {
         return {
             statusCode: 200,
-            body: null,
+            body: JSON.stringify({ latestRelease: null }),
         };
     }
 
