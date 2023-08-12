@@ -19,6 +19,7 @@ const s3Handler: Handler<S3Event> = async (event) => {
 }
 
 async function handleS3Record(record: S3EventRecord) {
+    console.log('before head object', record.s3)
     const head = await headObject({
         Bucket: record.s3.bucket.name,
         Key: record.s3.object.key,
