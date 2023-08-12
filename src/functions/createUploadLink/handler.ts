@@ -8,7 +8,7 @@ const createUploadLink: ValidatedEventAPIGatewayProxyEvent<typeof schema> = asyn
     const randomID = parseInt(Math.random() * 10000000 + '');
     const signedUrl = await getPutPresignedUrl({
         Bucket: 'sources-archives',
-        Key: `sources/commit:${event.body.commit}/${randomID}`,
+        Key: `sources/${event.body.commit}/${randomID}`,
         ContentType: 'application/zip',
         Metadata: {
             commit: event.body.commit,
