@@ -23,6 +23,7 @@ async function handleS3Record(record: S3EventRecord) {
         Bucket: record.s3.bucket.name,
         Key: record.s3.object.key,
     });
+    console.log('head object response', JSON.stringify(head));
     
     const commit: string = head.Metadata.commit;
     const uploadId: string = head.Metadata['upload-id'];
@@ -51,17 +52,21 @@ async function handleS3Record(record: S3EventRecord) {
         Bucket: record.s3.bucket.name,
         Key: record.s3.object.key,
     });
+    console.log('getobject 1', Body);
     const { Body: previousReleaseBody } = await getObject({
         Bucket: 'sources-archives',
         Key: `sources/commit:${previousRelease.commit}/${previousRelease.uploadId}`,
     });
+    console.log('get object 2', previousReleaseBody);
     
     if (!Body || !(Body instanceof Buffer) || !previousReleaseBody || !(previousReleaseBody instanceof Buffer)) {
         return;
     }
     
     const currentFiles = await unzipArchive(Body);
+    console.log('unzipped current', currentFiles);
     const previousFiles = await unzipArchive(previousReleaseBody);
+    console.log('unzipped previous', previousFiles);
 
     for (const file of currentFiles) {
         const previousFile = previousFiles.find(({ path }) => path === file.path);
