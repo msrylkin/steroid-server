@@ -1,15 +1,22 @@
 import { S3Client, PutObjectCommand, GetObjectCommand, HeadObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
-const isAws = !!process.env.STAGE;
+const isAws = process.env.IS_OFFLINE !== 'true';
 
-export const S3 = new S3Client({
-    // credentials: {
-    //     accessKeyId: isAws ? undefined : 'S3RVER', // This specific key is required when working offline
-    //     secretAccessKey: isAws ? undefined : 'S3RVER',
-    // },
-    // endpoint: isAws ? undefined : 'http://localhost:4569',
-});
+const params: ConstructorParameters<typeof S3Client>[0] = {};
+console.log('isAws', process.env.STAGE);
+console.log('offline', process.env.IS_OFFLINE);
+if (!isAws) {
+    console.log('here')
+    params.forcePathStyle = true;
+    params.credentials = {
+        accessKeyId: 'S3RVER', // This specific key is required when working offline
+        secretAccessKey: 'S3RVER',
+    };
+    params.endpoint = 'http://localhost:4569';
+}
+
+export const S3 = new S3Client(params);
 
 export function getPutPresignedUrl(input: ConstructorParameters<typeof PutObjectCommand>[0]) {
     const command = new PutObjectCommand(input);
