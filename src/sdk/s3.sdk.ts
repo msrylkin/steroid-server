@@ -29,6 +29,7 @@ export function getObject(input: ConstructorParameters<typeof GetObjectCommand>[
 }
 
 export function headObject(input: ConstructorParameters<typeof HeadObjectCommand>[0]) {
+    console.log(S3.config.credentials);
     const command = new HeadObjectCommand(input);
     return S3.send(command);
 }
