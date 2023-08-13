@@ -102,7 +102,7 @@ export async function saveTraces(releaseId: number, queries: QueriesMeasurements
                     fileName: caller.fileName,
                     columnNumber: caller.columnNumber,
                     lineNumber: caller.lineNumber,
-                    commit: '1',
+                    commit: release.commit,
                     env: new Environment(),
                 });
                 callerCodePlace = await CodePlace.create({
