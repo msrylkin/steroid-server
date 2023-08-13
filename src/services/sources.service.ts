@@ -160,13 +160,15 @@ async function getFileFromCommit(fileName: string, commit: string) {
         return null;
     }
 
+    const s3Key = `sources/${release.commit}/${release.uploadId}`;
+
     const { Body } = await getObject({
         Bucket: 'sources-archives',
-        Key: `sources/${release.commit}/${release.uploadId}`,
+        Key: s3Key,
     });
 
     if (!Body || !(Body instanceof Buffer)) {
-        console.log('no archive for', fileName, commit);
+        console.log('no archive for', fileName, commit, s3Key, Body);
         return null;
     }
 
