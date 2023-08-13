@@ -53,12 +53,12 @@ async function handleS3Record(record: S3EventRecord) {
         Bucket: record.s3.bucket.name,
         Key: record.s3.object.key,
     });
-    console.log('getobject 1', Body);
+    console.log('getobject 1');
     const { Body: previousReleaseBody } = await getObject({
         Bucket: 'sources-archives',
-        Key: `sources/commit:${previousRelease.commit}/${previousRelease.uploadId}`,
+        Key: `sources/${previousRelease.commit}/${previousRelease.uploadId}`,
     });
-    console.log('get object 2', previousReleaseBody);
+    console.log('get object 2');
     
     if (!Body || !(Body instanceof Buffer) || !previousReleaseBody || !(previousReleaseBody instanceof Buffer)) {
         return;
