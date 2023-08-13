@@ -1,6 +1,6 @@
 import { trace } from 'console';
 import { Op } from 'sequelize';
-import { Environment, Measurement } from 'src/models';
+import { Environment, Measurement, Release } from 'src/models';
 import { CodePlace } from 'src/models/CodePlace';
 import { Path } from 'src/models/Path';
 import { Tracker } from 'src/models/Tracker';
@@ -35,6 +35,7 @@ enum Colours {
 }
 
 export async function saveTraces(releaseId: number, queries: QueriesMeasurements[]) {
+    const release = await Release.findByPk(releaseId, { rejectOnEmpty: true });
     const trackersToSave: Tracker[] = [];
 
     for (const query of queries) {
@@ -55,7 +56,7 @@ export async function saveTraces(releaseId: number, queries: QueriesMeasurements
                 fileName: query.fileName,
                 columnNumber: query.columnNumber,
                 lineNumber: query.lineNumber,
-                commit: '1',
+                commit: release.commit,
                 env: new Environment(),
             });
             codePlace = await CodePlace.create({
