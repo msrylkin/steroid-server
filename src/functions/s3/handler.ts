@@ -49,24 +49,26 @@ async function handleS3Record(record: S3EventRecord) {
         return;
     }
 
-    const { Body } = await getObject({
+    const { Body: currentReleaseStream } = await getObject({
         Bucket: record.s3.bucket.name,
         Key: record.s3.object.key,
     });
     console.log('getobject 1');
-    const { Body: previousReleaseBody } = await getObject({
+    const currentReleaseBuffer = currentReleaseStream && Buffer.from(await currentReleaseStream.transformToByteArray());
+    const { Body: previousReleaseStream } = await getObject({
         Bucket: 'sources-archives',
         Key: `sources/${previousRelease.commit}/${previousRelease.uploadId}`,
     });
+    const previousReleaseBuffer = previousReleaseStream && Buffer.from(await previousReleaseStream.transformToByteArray());
     console.log('get object 2');
     
-    if (!Body || !(Body instanceof Buffer) || !previousReleaseBody || !(previousReleaseBody instanceof Buffer)) {
+    if (!currentReleaseBuffer || !(currentReleaseBuffer instanceof Buffer) || !previousReleaseBuffer || !(previousReleaseBuffer instanceof Buffer)) {
         return;
     }
     
-    const currentFiles = await unzipArchive(Body);
+    const currentFiles = await unzipArchive(currentReleaseBuffer);
     console.log('unzipped current', currentFiles);
-    const previousFiles = await unzipArchive(previousReleaseBody);
+    const previousFiles = await unzipArchive(previousReleaseBuffer);
     console.log('unzipped previous', previousFiles);
 
     for (const file of currentFiles) {
