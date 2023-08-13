@@ -167,6 +167,8 @@ async function getFileFromCommit(fileName: string, commit: string) {
         Key: s3Key,
     });
 
+    const previousReleaseBuffer = Body && Buffer.from(await Body.transformToByteArray());
+
     if (!Body || !(Body instanceof Buffer)) {
         console.log('no archive for', fileName, commit, s3Key, Body);
         return null;
