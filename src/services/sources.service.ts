@@ -169,12 +169,12 @@ async function getFileFromCommit(fileName: string, commit: string) {
 
     const previousReleaseBuffer = Body && Buffer.from(await Body.transformToByteArray());
 
-    if (!Body || !(Body instanceof Buffer)) {
-        console.log('no archive for', fileName, commit, s3Key, Body);
+    if (!previousReleaseBuffer || !(previousReleaseBuffer instanceof Buffer)) {
+        console.log('no archive for', fileName, commit, s3Key, typeof previousReleaseBuffer);
         return null;
     }
 
-    const files = await unzipArchive(Body);
+    const files = await unzipArchive(previousReleaseBuffer);
     const file = files.find(fileObj => fileObj.path === fileName);
 
     return file.content;
