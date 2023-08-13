@@ -162,7 +162,7 @@ async function getFileFromCommit(fileName: string, commit: string) {
 
     const { Body } = await getObject({
         Bucket: 'sources-archives',
-        Key: `sources/commit:${release.commit}/${release.uploadId}`,
+        Key: `sources/${release.commit}/${release.uploadId}`,
     });
 
     if (!Body || !(Body instanceof Buffer)) {
