@@ -53,14 +53,14 @@ async function handleS3Record(record: S3EventRecord) {
         Bucket: record.s3.bucket.name,
         Key: record.s3.object.key,
     });
-    console.log('getobject 1');
     const currentReleaseBuffer = currentReleaseStream && Buffer.from(await currentReleaseStream.transformToByteArray());
+    console.log('getobject 1', currentReleaseBuffer instanceof Buffer, currentReleaseBuffer);
     const { Body: previousReleaseStream } = await getObject({
         Bucket: 'sources-archives',
         Key: `sources/${previousRelease.commit}/${previousRelease.uploadId}`,
     });
     const previousReleaseBuffer = previousReleaseStream && Buffer.from(await previousReleaseStream.transformToByteArray());
-    console.log('get object 2');
+    console.log('get object 2', previousReleaseBuffer instanceof Buffer, previousReleaseBuffer);
     
     if (!currentReleaseBuffer || !(currentReleaseBuffer instanceof Buffer) || !previousReleaseBuffer || !(previousReleaseBuffer instanceof Buffer)) {
         return;
